@@ -2,6 +2,7 @@ import db_article
 import db_error
 import article_parse
 import time
+from time import gmtime, strftime
 
 cnt_error = 0
 
@@ -25,14 +26,19 @@ if __name__ == "__main__":
         if status_code == '200':
             db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
             cnt_error = 0 #Reset Error
+            seq = seq + 1 #Next
         else:
             cnt_error = cnt_error + 1 #
+            seq = seq + 1 #Next
+
             if cnt_error >= 100:
-                print('Reset seq:' + str(seq))
-                time.sleep(1 * 60 * 10) #wait
+                print('Sleep:' + strftime("%Y-%m-%d %H:%M:%S", gmtime()))
+                print('seq:' + str(seq))
+                print('cnt_error:' + str(cnt_error))
+                time.sleep(1 * 60 * 1) #wait
                 seq = get_seq()
 
-        seq = seq + 1 #Next
+
 
         if (seq % 10) == 0:
             print('seq:' + str(seq))
