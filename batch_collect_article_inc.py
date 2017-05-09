@@ -1,0 +1,20 @@
+import db_article
+import article_parse
+
+#---------------------------------
+# Test Suit
+if __name__ == "__main__":
+    seq = db_article.sqlGetMaxSeq()
+    print('start seq:' + str(seq))
+
+    while True:
+        seq = seq + 1
+
+        status_code, resutl_time, result_user, resutl_title, resutl_body = article_parse.parse_article(str(seq))
+        if status_code == '200':
+            db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
+
+
+
+        if (seq % 100) == 0:
+            print('seq:' + str(seq))
