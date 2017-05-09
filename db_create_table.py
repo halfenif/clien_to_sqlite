@@ -14,6 +14,15 @@ constDBArticle = (
     ")                                                      "
 )
 
+constDBError = (
+    "CREATE TABLE `tb_error` (                              "
+    "	`seq`	INTEGER PRIMARY KEY,                        "
+    "	`status` TEXT,                                      "
+    "	`regdate`	datetime DEFAULT CURRENT_TIMESTAMP,     "
+    "	`checkdate`	datetime                                "
+    ")                                                      "
+)
+
 
 #---------------------------------
 # Folder Safe
@@ -28,6 +37,7 @@ conn = dbms.connect.sqlite(constDBMS)
 cur = conn.cursor()
 
 cur.execute(constDBArticle)
+cur.execute(constDBError)
 
 conn.commit()
 conn.close()

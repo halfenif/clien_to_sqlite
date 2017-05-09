@@ -54,7 +54,6 @@ def sqlInsert(result_index, result_title, result_body, result_date_for_key, resu
     conn = dbms.connect.sqlite(constDBMS)
     cur = conn.cursor()
     cur.execute(constSQLInsert, (result_index, result_title, result_body, result_date_for_key, result_user,))
-    cur.showStatement()
     conn.commit()
     conn.close()
     return

@@ -1,4 +1,5 @@
 import db_article
+import db_error
 import article_parse
 
 #---------------------------------
@@ -13,6 +14,8 @@ if __name__ == "__main__":
         status_code, resutl_time, result_user, resutl_title, resutl_body = article_parse.parse_article(str(seq))
         if status_code == '200':
             db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
+        # else:
+        #     db_error.insertItem(seq)
 
 
 
