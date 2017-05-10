@@ -14,6 +14,14 @@ constDBArticle = (
     ")                                                      "
 )
 
+constDBSummaryDay = (
+    "CREATE TABLE `tb_summary_day` (                        "
+    "	`day`	TEXT PRIMARY KEY,                           "
+    "	`cnt`	INTEGER,                                    "
+    "	`regdate`	datetime DEFAULT CURRENT_TIMESTAMP      "
+    ")                                                      "
+)
+
 constDBError = (
     "CREATE TABLE `tb_error` (                              "
     "	`seq`	INTEGER PRIMARY KEY,                        "

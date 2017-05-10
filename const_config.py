@@ -1,5 +1,5 @@
 def get_dbms():
-    return './output_dbms/db_clien.db'
+    return 'e:/db_clien.db'
 
 def get_baseurl():
     return 'https://www.clien.net/service/board/park/'
