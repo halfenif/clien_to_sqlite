@@ -3,6 +3,9 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+import article_get_by_request
+import article_get_by_tor
+
 baseurl = const_config.get_baseurl()
 
 def parse_article(strseq):
@@ -13,23 +16,27 @@ def parse_article(strseq):
     result_user = ''
 
     try:
-        request_return = requests.get(baseurl + strseq)
+        out = '' #init
 
-        status_code = str(request_return.status_code)
+        if const_config.get_type() == "TOR":
+            socket_port = article_get_by_tor.get_socket_port()
+            out = article_get_by_tor.get_article(strseq, socket_port)
 
-        if status_code == '200':
-            try:
-                out = request_return.text
-                resutl_title = re.findall('<title>(.*)</title>', out)[0]
-                lxml = BeautifulSoup(out,'lxml')
-                resutl_time = lxml.find('div', attrs={"class": "post-time"}).text.strip()
-                resutl_body = lxml.find('div', attrs={"class": "post-article fr-view"}).text
-                result_user = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
+        try:
+            resutl_title = re.findall('<title>(.*)</title>', out)[0]
+            resutl_title = resutl_title.replace(' : 클리앙','')
+            print('resutl_title:', resutl_title)
+            lxml = BeautifulSoup(out,'lxml')
+            resutl_time = lxml.find('div', attrs={"class": "post-time"}).text.strip()
+            resutl_body = lxml.find('div', attrs={"class": "post-article fr-view"}).text
+            result_user = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
 
-            except Exception as e:
-                print('Parse Exception:' + baseurl + strseq)
-                resutl_title = 'Parse Error'
-                resutl_body = 'Exception:' + str(e)
+            status_code = '200'
+
+        except Exception as e:
+            print('Parse Exception:' + baseurl + strseq)
+            resutl_title = 'Parse Error'
+            resutl_body = 'Exception:' + str(e)
 
     except Exception as e:
         print('Request Exception:' + baseurl + strseq)
