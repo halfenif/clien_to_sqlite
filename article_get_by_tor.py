@@ -76,6 +76,7 @@ def get_article(strseq, socket_port):
             #'ExitNodes':'{ru}',
         },
         init_msg_handler = print_bootstarp_lines,
+        timeout = 90,
     )
 
     try:

@@ -8,7 +8,7 @@ def get_conn_sqlite():
     return dbms.connect.sqlite('w:/data/sqlite/db_clien.db')
 
 def get_conn_postgres():
-    return dbms.connect.postgres('clien', 'clien', 'postgres')
+    return dbms.connect.postgres('clien', 'clien', 'clien')
 
 def delete_target():
     conn_postgres = get_conn_postgres()
