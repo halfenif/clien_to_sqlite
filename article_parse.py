@@ -18,9 +18,18 @@ def parse_article(strseq):
     try:
         out = '' #init
 
-        if const_config.get_type() == "TOR":
+        if const_config.get_request_type() == "TOR":
             socket_port = article_get_by_tor.get_socket_port()
             out = article_get_by_tor.get_article(strseq, socket_port)
+        elif const_config.get_request_type() == "REQUEST":
+            out = article_get_by_request.get_article(strseq)
+            if out == 'Error':
+                print('Request Error')
+                return
+
+        else:
+            print('Not Defined Request Type:', const_config.get_request_type())
+            return
 
         try:
             resutl_title = re.findall('<title>(.*)</title>', out)[0]

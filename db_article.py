@@ -1,23 +1,20 @@
 import const_config
-import dbms
+import const_dbms
+from dbms import utils
+from dbms.utils import Param, NamedParam
 import time
-
-constDBMS = const_config.get_dbms()
-constSQLInsert = 'INSERT INTO tb_article (seq, title, body, pubdate, postuser) values (?, ?, ?, ?, ?)'
-constSQLSelectForExistCheck = 'SELECT seq FROM tb_article WHERE seq = ?'
-constSQLSelectForMaxSeq = 'SELECT IFNULL(MAX(seq),0) maxseq FROM tb_article'
-constSQLSelectForMinSeq = 'SELECT IFNULL(MIN(seq),0) minseq FROM tb_article'
 
 #---------------------------------
 # SQL Exist Check
 def sqlExistCheck(seq):
-    #print('sqlExistCheck')
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
-    cur.execute(constSQLSelectForExistCheck, (seq,))
+    query, params = utils.formatQuery(('SELECT seq FROM tb_article WHERE seq = ',
+                                       Param(seq)),
+                                       cur.paramstyle)
+    cur.execute(query, params)
 
     bExist = False
-
     if len(cur.fetchall())  > 0:
         bExist = True
 
@@ -28,32 +25,51 @@ def sqlExistCheck(seq):
 #---------------------------------
 # SQL Max Seq
 def sqlGetMaxSeq():
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
-    cur.execute(constSQLSelectForMaxSeq)
+    query, params = utils.formatQuery(('SELECT MAX(seq) seq FROM tb_article WHERE 1=', Param(1) ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
     maxseq = cur.fetchone()
+    print(maxseq)
     conn.close()
 
-    return maxseq['maxseq']
+    if maxseq['seq'] == None:
+        return 0
+    return maxseq['seq']
 
 #---------------------------------
 # SQL Min Seq
 def sqlGetMinSeq():
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
-    cur.execute(constSQLSelectForMinSeq)
+    query, params = utils.formatQuery(('SELECT MIN(seq) seq FROM tb_article WHERE 1=', Param(1) ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
     maxseq = cur.fetchone()
+    print(maxseq)
     conn.close()
 
-    return maxseq['minseq']
+    if maxseq['seq'] == None:
+        return 0
+    return maxseq['seq']
 
 #---------------------------------
 # SQL Article Insert
 def sqlInsert(result_index, result_title, result_body, result_date_for_key, result_user):
-
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
-    cur.execute(constSQLInsert, (result_index, result_title, result_body, result_date_for_key, result_user,))
+    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, title, body, pubdate, postuser) VALUES (',
+                                        Param(result_index),        ',',
+                                        Param(result_title),        ',',
+                                        Param(result_body),         ',',
+                                        Param(result_date_for_key), ',',
+                                        Param(result_user),         ')'
+                                        ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
+
+    #cur.execute(constSQLInsert, (result_index, result_title, result_body, result_date_for_key, result_user,))
     conn.commit()
     conn.close()
     return

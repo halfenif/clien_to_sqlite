@@ -1,16 +1,14 @@
 import const_config
-import dbms
+import const_dbms
 import time
 
-constDBMS = const_config.get_dbms()
 constSQLInsert = 'INSERT INTO tb_error (seq) values (?)'
 constSQLSelectForExistCheck = 'SELECT seq FROM tb_error WHERE seq = ?'
 
 #---------------------------------
 # SQL Exist Check
 def sqlExistCheck(seq):
-    #print('sqlExistCheck')
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
     cur.execute(constSQLSelectForExistCheck, (seq,))
 
@@ -25,8 +23,7 @@ def sqlExistCheck(seq):
 #---------------------------------
 # SQL Eror Insert
 def sqlInsert(result_index):
-
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
     cur.execute(constSQLInsert, (result_index,))
     conn.commit()

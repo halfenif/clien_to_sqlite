@@ -1,8 +1,8 @@
 import const_config
-import dbms
+import const_dbms
 import time
 
-constDBMS = const_config.get_dbms()
+
 constSQLDeleteSummaryDay = 'DELETE FROM tb_summary_day'
 tempSQL = []
 tempSQL.append("INSERT INTO tb_summary_day (day, cnt) ")
@@ -15,8 +15,7 @@ constSQLInsertSummaryDay = ''.join(tempSQL)
 #---------------------------------
 # SQL Summary Update
 def sqlUpdateSummaryDay():
-
-    conn = dbms.connect.sqlite(constDBMS)
+    conn = const_dbms.get_conn()
     cur = conn.cursor()
     cur.execute(constSQLDeleteSummaryDay)
     conn.commit()
