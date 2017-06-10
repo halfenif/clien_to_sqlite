@@ -34,7 +34,7 @@ def parse_article(strseq):
         try:
             resutl_title = re.findall('<title>(.*)</title>', out)[0]
             resutl_title = resutl_title.replace(' : 클리앙','')
-            print('resutl_title:', resutl_title)
+            #print('resutl_title:', resutl_title)
             lxml = BeautifulSoup(out,'lxml')
             resutl_time = lxml.find('div', attrs={"class": "post-time"}).text.strip()
             resutl_body = lxml.find('div', attrs={"class": "post-article fr-view"}).text

@@ -24,16 +24,15 @@ def get_socket_port():
         if result == 0:
             SOCKS_PORT_START = SOCKS_PORT_START + 1
         else:
-            print('SOCKS_PORT:', SOCKS_PORT_START)
+            #print('SOCKS_PORT:', SOCKS_PORT_START)
             return SOCKS_PORT_START
 
 def query(url, socket_port):
-    print('-------------------------------------------------------------------')
-    print('query url:', url)
     """
     Uses ptcurl to fetch a site using the proxy on the SOCKS_PORT
     """
 
+    time_start = time.time()
     output = io.BytesIO()
 
     query = pycurl.Curl()
@@ -45,9 +44,9 @@ def query(url, socket_port):
 
     try:
         #print('Before - query.perform()')
-        time_start = time.time()
+
         query.perform()
-        print('QueryTime:', round(time.time() - time_start), 'sec')
+
         #print('After - query.perform()')
 
         #print(output.getvalue().decode('utf-8','ignore').encode("utf-8"))
@@ -57,9 +56,11 @@ def query(url, socket_port):
         return out
     except pycurl.error as exc:
         return "Unable to reach %s (%s)" % (url, exc)
-
+    finally:
+        print('Port',socket_port,':',round(time.time() - time_start), 'sec' ,url)
 
 def get_article(strseq, socket_port):
+    print('-------------------------------------------------------------------')
     str_socket_port = str(socket_port)
     strDataFolder = constDataFolder + str_socket_port
     try:
