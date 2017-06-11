@@ -42,7 +42,7 @@ constDBError = (
 #     body text COLLATE pg_catalog."default",
 #     pubdate text COLLATE pg_catalog."default",
 #     postuser text COLLATE pg_catalog."default",
-#     regdate timestamp without time zone DEFAULT timestamp 'now()' NOT NULL,
+#     regdate timestamp without time zone NOT NULL,
 #     CONSTRAINT tb_article_pkey PRIMARY KEY (seq)
 # )
 # WITH (
@@ -52,6 +52,10 @@ constDBError = (
 #
 # ALTER TABLE public.tb_article
 #     OWNER to clien;
+#
+#
+# ALTER TABLE public.tb_article
+#     ALTER COLUMN regdate SET DEFAULT now();
 
 
 #---------------------------------
