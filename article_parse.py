@@ -46,12 +46,12 @@ def parse_article(strseq):
             status_code = '200'
 
         except Exception as e:
-            print('Parse Exception:' + baseurl + strseq)
+            print('Parse Exception')
             resutl_title = 'Parse Error'
             resutl_body = 'Exception:' + str(e)
 
     except Exception as e:
-        print('Request Exception:' + baseurl + strseq)
+        print('Request Exception')
         resutl_title = 'Request Error'
         resutl_body = 'Exception:' + str(e)
 
