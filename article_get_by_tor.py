@@ -96,11 +96,12 @@ def get_article(url, socket_port):
             out_return = out_io.getvalue().decode('utf-8','ignore')
             #print(out_return)
 
-    except pycurl.error as exc:
-        return "Unable to reach %s (%s)" % (url, exc)
+    except:
+        print('Pycurl Exception:', sys.exc_info()[0])
+        return '-1', ''
 
     finally:
-        print('Port:',socket_port,'StatusCode:',status_code,'ResultSize:',len(out_return), 'RequestTime:', round(time.time() - time_start), 'sec' ,url)
+        print('[', time.strftime('%x %X', time.localtime()),']', 'Port:',socket_port,'StatusCode:',status_code,'ResultSize:',len(out_return), 'RequestTime:', round(time.time() - time_start), 'sec' ,url)
 
     return status_code, out_return
 

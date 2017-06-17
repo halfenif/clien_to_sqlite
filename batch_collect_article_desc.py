@@ -20,8 +20,8 @@ if __name__ == "__main__":
             url = const_config.get_baseurl() + str(seq)
 
             if const_config.get_request_type() == "TOR":
-                status_code, resutl_context = article_get_by_tor.get_article( url, socket_port)
-                
+                status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
+
             if status_code == '200':
                 resutl_title, resutl_body, resutl_time, result_user = article_parse.parse_article(resutl_context)
                 db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
