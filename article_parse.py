@@ -21,34 +21,29 @@ def parse_article(strseq):
 
         if const_config.get_request_type() == "TOR":
             socket_port = article_get_by_tor.get_socket_port()
-            out = article_get_by_tor.get_article(strseq, socket_port)
+            status_code, out = article_get_by_tor.get_article(strseq, socket_port)
         elif const_config.get_request_type() == "REQUEST":
-            out = article_get_by_request.get_article(strseq)
-            if out == 'Error':
-                print('Request Error')
-                return
-
+            status_code, out = article_get_by_request.get_article(strseq)
         else:
             print('Not Defined Request Type:', const_config.get_request_type())
             return
 
-        try:
-            resutl_title = re.findall('<title>(.*)</title>', out)[0]
-            resutl_title = html.unescape(resutl_title.replace(' : 클리앙','').replace('\0','').strip())
+        if status_code == '200':
+            try:
+                resutl_title = re.findall('<title>(.*)</title>', out)[0]
+                resutl_title = html.unescape(resutl_title.replace(' : 클리앙','').replace('\0','').strip())
 
 
-            #print('resutl_title:', resutl_title)
-            lxml = BeautifulSoup(out,'lxml')
-            resutl_time = lxml.find('div', attrs={"class": "post-time"}).text.strip()
-            resutl_body = html.unescape(lxml.find('div', attrs={"class": "post-article fr-view"}).text.replace('\0','').strip())
-            result_user = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
+                #print('resutl_title:', resutl_title)
+                lxml = BeautifulSoup(out,'lxml')
+                resutl_time = lxml.find('div', attrs={"class": "post-time"}).text.strip()
+                resutl_body = html.unescape(lxml.find('div', attrs={"class": "post-article fr-view"}).text.replace('\0','').strip())
+                result_user = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
 
-            status_code = '200'
-
-        except Exception as e:
-            print('Parse Exception')
-            resutl_title = 'Parse Error'
-            resutl_body = 'Exception:' + str(e)
+            except Exception as e:
+                print('Parse Exception')
+                resutl_title = 'Parse Error'
+                resutl_body = 'Exception:' + str(e)
 
     except Exception as e:
         print('Request Exception')

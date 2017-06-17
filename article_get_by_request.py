@@ -17,9 +17,9 @@ def get_article(strseq):
             return request_return.text
 
     except Exception as e:
-        return "Error"
+        return '-1', "Error"
 
-    return status_code, resutl_time, result_user, resutl_title, resutl_body
+    return status_code, request_return
 
 
 #---------------------------------

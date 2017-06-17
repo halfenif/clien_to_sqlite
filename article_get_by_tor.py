@@ -31,8 +31,11 @@ def query(url, socket_port):
     """
     Uses ptcurl to fetch a site using the proxy on the SOCKS_PORT
     """
-
     time_start = time.time()
+
+    outReturn = "" #Init Value
+    status_code = ''
+
     output = io.BytesIO()
 
     query = pycurl.Curl()
@@ -46,18 +49,20 @@ def query(url, socket_port):
         #print('Before - query.perform()')
 
         query.perform()
+        status_code = str(query.getinfo(pycurl.HTTP_CODE))
 
-        #print('After - query.perform()')
+        if status_code == '200':
+            #print('After - query.perform()')
+            outReturn = output.getvalue().decode('utf-8','ignore')
+            #print(outReturn)
 
-        #print(output.getvalue().decode('utf-8','ignore').encode("utf-8"))
-        #print(output.getvalue().decode('utf-8','ignore'))
-        out = output.getvalue().decode('utf-8','ignore')
-        #print(out)
-        return out
     except pycurl.error as exc:
         return "Unable to reach %s (%s)" % (url, exc)
+
     finally:
-        print('Port',socket_port,':',round(time.time() - time_start), 'sec' ,url)
+        print('Port:',socket_port,'StatusCode:',status_code,'ResultSize:',len(outReturn), 'RequestTime:', round(time.time() - time_start), 'sec' ,url)
+
+    return status_code, outReturn
 
 def get_article(strseq, socket_port):
     print('-------------------------------------------------------------------')
@@ -73,6 +78,7 @@ def get_article(strseq, socket_port):
             #'tor_cmd':"C:/Users/junye/Desktop/Tor Browser/Browser/TorBrowser/Tor/Tor.exe",
             'SocksPort':str_socket_port,
             'DataDirectory':strDataFolder,
+            #'Log': ['DEBUG stdout', 'ERR stderr' ],
             #'ExitNodes':'{ru}',
         },
         init_msg_handler = print_bootstarp_lines,
