@@ -3,6 +3,7 @@ import db_error
 import article_parse
 import time
 from time import gmtime, strftime
+import sys
 
 def get_seq():
     seq = db_article.sqlGetMaxSeq()
@@ -35,3 +36,5 @@ if __name__ == "__main__":
 
         if (seq % 10) == 0:
             print('seq:' + str(seq))
+
+        sys.stdout.flush()

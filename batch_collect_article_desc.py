@@ -1,6 +1,7 @@
 import db_article
 import db_error
 import article_parse
+import sys
 
 #---------------------------------
 # Test Suit
@@ -21,3 +22,5 @@ if __name__ == "__main__":
 
         if (seq % 100) == 0:
             print('seq:' + str(seq))
+
+        sys.stdout.flush()
