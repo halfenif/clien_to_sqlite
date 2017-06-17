@@ -1,9 +1,13 @@
-import db_article
-import db_error
+import sys
+import const_config
+import article_get
 import article_parse
+import db_article
+import article_get_by_tor
+
 import time
 from time import gmtime, strftime
-import sys
+
 
 def get_seq():
     seq = db_article.sqlGetMaxSeq()
@@ -18,23 +22,35 @@ def get_seq():
 if __name__ == "__main__":
     seq, cnt_error = get_seq() #Check Seq
 
-    while True:
-        status_code, resutl_time, result_user, resutl_title, resutl_body = article_parse.parse_article(str(seq))
-        if status_code == '200':
-            db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
-            cnt_error = 0 #Reset Error
-            seq = seq + 1 #Next
-        else:
-            cnt_error = cnt_error + 1 #
-            seq = seq + 1 #Next
+    try:
+        if const_config.get_request_type() == "TOR":
+            tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-            if cnt_error >= 100:
-                seq, cnt_error = get_seq() #Check Seq
+        while True:
+            url = const_config.get_baseurl() + str(seq)
+            if const_config.get_request_type() == "TOR":
+                status_code, resutl_context = article_get_by_tor.get_article( url, socket_port)
 
-                print('Sleep:' + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' : ' + str(seq))
-                time.sleep(1 * 60 * 1) #wait
+            if status_code == '200':
+                resutl_title, resutl_body, resutl_time, result_user = article_parse.parse_article(resutl_context)
+                db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
+                cnt_error = 0 #Reset Error
+                seq = seq + 1 #Next
+            else:
+                cnt_error = cnt_error + 1 #
+                seq = seq + 1 #Next
 
-        if (seq % 10) == 0:
-            print('seq:' + str(seq))
+                if cnt_error >= 100:
+                    seq, cnt_error = get_seq() #Check Seq
 
-        sys.stdout.flush()
+                    print('Sleep:' + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' : ' + str(seq))
+                    time.sleep(1 * 60 * 1) #wait
+
+            if (seq % 10) == 0:
+                print('seq:' + str(seq))
+
+            sys.stdout.flush()
+
+    finally:
+        if const_config.get_request_type() == "TOR":
+            article_get_by_tor.kill_tor_process(tor_process)

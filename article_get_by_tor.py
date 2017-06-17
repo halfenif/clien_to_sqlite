@@ -22,28 +22,68 @@ def get_socket_port():
     while(result == 0):
         result = sock.connect_ex(('127.0.0.1',SOCKS_PORT_START))
         if result == 0:
+            print('In Use Port No:', SOCKS_PORT_START)
             SOCKS_PORT_START = SOCKS_PORT_START + 1
         else:
-            #print('SOCKS_PORT:', SOCKS_PORT_START)
+            print('OK! SOCKS_PORT:', SOCKS_PORT_START)
             return SOCKS_PORT_START
 
-def query(url, socket_port):
-    """
-    Uses ptcurl to fetch a site using the proxy on the SOCKS_PORT
-    """
+#-------------------------------------------------------------------------------
+# Create
+def get_tor_process():
+    print('-------------------------------------------------------------------')
+    socket_port = get_socket_port()
+    strDataFolder = constDataFolder + str(socket_port)
+    try:
+        os.stat(strDataFolder)
+    except:
+        os.makedirs(strDataFolder)
+
+    tor_process = stem.process.launch_tor_with_config(
+        config = {
+            #'tor_cmd':"C:/Users/junye/Desktop/Tor Browser/Browser/TorBrowser/Tor/Tor.exe",
+            'SocksPort':str(socket_port),
+            'DataDirectory':strDataFolder,
+            #'Log': ['DEBUG stdout', 'ERR stderr' ],
+            #'ExitNodes':'{ru}',
+        },
+        init_msg_handler = print_bootstarp_lines,
+        timeout = 90,
+    )
+
+    return tor_process, socket_port
+
+#-------------------------------------------------------------------------------
+# BootStrap
+def print_bootstarp_lines(line):
+    #print("line:" + line)
+    if "Bootstrapped" in line:
+        #print(term.format(line, term.Color.BLUE))
+        print(line)
+        pass
+
+#-------------------------------------------------------------------------------
+# Kill
+def kill_tor_process(tor_process):
+    tor_process.kill()
+    print('Tor Process Killed')
+
+#-------------------------------------------------------------------------------
+# Call
+def get_article(url, socket_port):
+    #print('article_get_by_tor.get_article()')
     time_start = time.time()
 
-    outReturn = "" #Init Value
+    out_return = '' #Init Value
     status_code = ''
 
-    output = io.BytesIO()
-
+    out_io = io.BytesIO()
     query = pycurl.Curl()
     query.setopt(pycurl.URL, url)
     query.setopt(pycurl.PROXY, 'localhost')
     query.setopt(pycurl.PROXYPORT, socket_port)
     query.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_SOCKS5_HOSTNAME)
-    query.setopt(pycurl.WRITEFUNCTION, output.write)
+    query.setopt(pycurl.WRITEFUNCTION, out_io.write)
 
     try:
         #print('Before - query.perform()')
@@ -53,53 +93,20 @@ def query(url, socket_port):
 
         if status_code == '200':
             #print('After - query.perform()')
-            outReturn = output.getvalue().decode('utf-8','ignore')
-            #print(outReturn)
+            out_return = out_io.getvalue().decode('utf-8','ignore')
+            #print(out_return)
 
     except pycurl.error as exc:
         return "Unable to reach %s (%s)" % (url, exc)
 
     finally:
-        print('Port:',socket_port,'StatusCode:',status_code,'ResultSize:',len(outReturn), 'RequestTime:', round(time.time() - time_start), 'sec' ,url)
+        print('Port:',socket_port,'StatusCode:',status_code,'ResultSize:',len(out_return), 'RequestTime:', round(time.time() - time_start), 'sec' ,url)
 
-    return status_code, outReturn
+    return status_code, out_return
 
-def get_article(strseq, socket_port):
-    print('-------------------------------------------------------------------')
-    str_socket_port = str(socket_port)
-    strDataFolder = constDataFolder + str_socket_port
-    try:
-        os.stat(strDataFolder)
-    except:
-        os.makedirs(strDataFolder)
 
-    tor_process = stem.process.launch_tor_with_config(
-        config = {
-            #'tor_cmd':"C:/Users/junye/Desktop/Tor Browser/Browser/TorBrowser/Tor/Tor.exe",
-            'SocksPort':str_socket_port,
-            'DataDirectory':strDataFolder,
-            #'Log': ['DEBUG stdout', 'ERR stderr' ],
-            #'ExitNodes':'{ru}',
-        },
-        init_msg_handler = print_bootstarp_lines,
-        timeout = 90,
-    )
 
-    try:
-        return query(baseurl + strseq, socket_port)
-    finally:
-        tor_process.kill() #stops tor
 
-#Start as instance of Tor configured to only exit through (ru)Russia. This prints
-# Tor's bootstrap information as it starts. Note that this likely will not
-# work if you have another Tor instance running
-
-def print_bootstarp_lines(line):
-    #print("line:" + line)
-    if "Bootstrapped" in line:
-        #print(term.format(line, term.Color.BLUE))
-        print(line)
-        pass
 
 
 #---------------------------------
