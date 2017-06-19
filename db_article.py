@@ -81,8 +81,8 @@ def insertItem(result_index, result_title, result_body, result_date_for_key, res
         print('[Exist  Article] ' + result_title)
     else:
         sqlInsert(result_index, result_title, result_body, result_date_for_key, result_user)
-        print('[Insert Article] ' + result_date_for_key + ':' + result_title)
-
+        #print('[Insert Article] ' + result_date_for_key + ':' + result_title)
+        print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article', result_date_for_key, result_title)
     return
 
 #---------------------------------
