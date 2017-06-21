@@ -9,7 +9,6 @@ import socket
 import os
 import const_config
 
-baseurl = const_config.get_baseurl()
 constDataFolder = './data_tor/'
 
 def get_socket_port():

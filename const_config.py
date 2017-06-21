@@ -1,10 +1,21 @@
+import logging
+
+def set_log_level():
+    logging.basicConfig(level=logging.DEBUG)
 
 def get_baseurl():
-    return 'https://www.clien.net/service/board/park/'
+    return 'https://www.clien.net/service/board/'
+
+def get_bbs_class():
+    return 'park'
+
+def gey_url_by_seq(seq):
+    return get_baseurl() + get_bbs_class() + '/' + str(seq)
 
 def get_request_type():
-    #return "REQUEST"
-    return "TOR"
+    #strType = "REQUEST"
+    strType = "TOR"
+    return strType
 
 def testseq():
     #return 10718711 # 404 Not Found

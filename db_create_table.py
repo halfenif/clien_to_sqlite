@@ -22,15 +22,6 @@ constDBSummaryDay = (
     ")                                                      "
 )
 
-constDBError = (
-    "CREATE TABLE `tb_error` (                              "
-    "	`seq`	INTEGER PRIMARY KEY,                        "
-    "	`status` TEXT,                                      "
-    "	`regdate`	datetime DEFAULT CURRENT_TIMESTAMP,     "
-    "	`checkdate`	datetime                                "
-    ")                                                      "
-)
-
 
 #Postgres Table
 # DROP TABLE public.tb_article;
@@ -42,7 +33,7 @@ constDBError = (
 #     body text COLLATE pg_catalog."default",
 #     pubdate text COLLATE pg_catalog."default",
 #     postuser text COLLATE pg_catalog."default",
-#     regdate timestamp without time zone NOT NULL,
+#     regdate timestamp with time zone NOT NULL,
 #     CONSTRAINT tb_article_pkey PRIMARY KEY (seq)
 # )
 # WITH (
@@ -56,6 +47,30 @@ constDBError = (
 #
 # ALTER TABLE public.tb_article
 #     ALTER COLUMN regdate SET DEFAULT now();
+
+
+
+# DROP TABLE public.tb_article_index;
+#
+# CREATE TABLE public.tb_article_index
+# (
+#     seq integer NOT NULL,
+#     bbsclass text COLLATE pg_catalog."default",
+#     regdate timestamp with time zone NOT NULL,
+#     CONSTRAINT tb_article_index_pkey PRIMARY KEY (seq)
+# )
+# WITH (
+#     OIDS = FALSE
+# )
+# TABLESPACE clien;
+#
+# ALTER TABLE public.tb_article_index
+#     OWNER to clien;
+#
+#
+# ALTER TABLE public.tb_article_index
+#     ALTER COLUMN regdate SET DEFAULT now();
+
 
 
 #---------------------------------

@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
         while seq > 0:
             seq = seq - 1
-            url = const_config.get_baseurl() + str(seq)
+            url = const_config.gey_url_by_seq(seq)
 
             if const_config.get_request_type() == "TOR":
                 status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)

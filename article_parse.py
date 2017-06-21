@@ -33,7 +33,9 @@ def parse_article(content):
 #---------------------------------
 # Test Suit
 if __name__ == "__main__":
-    status_code, resutl_pubdate, result_user, resutl_title, resutl_body = article_get.get_article( str(const_config.testseq()))
+    
+    url = const_config.get_baseurl() + const_config.get_bbs_class() + '/' + str(const_config.testseq())
+    status_code, resutl_pubdate, result_user, resutl_title, resutl_body = article_get.get_article(url)
 
     print('Status Code:', status_code)
     print('Post Datetime:', resutl_pubdate)

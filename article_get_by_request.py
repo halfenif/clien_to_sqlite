@@ -3,13 +3,11 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
-baseurl = const_config.get_baseurl()
-
-def get_article(strseq):
+def get_article(url):
     status_code = ''
 
     try:
-        request_return = requests.get(baseurl + strseq)
+        request_return = requests.get(url)
 
         status_code = str(request_return.status_code)
 
