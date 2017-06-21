@@ -42,11 +42,7 @@ if __name__ == "__main__":
         if const_config.get_request_type() == "TOR":
             tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-<<<<<<< HEAD
         get_list('park', socket_port, 0) #InitValue
-=======
-        get_list('park', socket_port, 10)
->>>>>>> master
 
     finally:
         if const_config.get_request_type() == "TOR":
