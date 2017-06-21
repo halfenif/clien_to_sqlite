@@ -56,6 +56,7 @@ constDBSummaryDay = (
 # (
 #     seq integer NOT NULL,
 #     bbsclass text COLLATE pg_catalog."default",
+#     stat integer NOT NULL,
 #     regdate timestamp with time zone NOT NULL,
 #     CONSTRAINT tb_article_index_pkey PRIMARY KEY (seq)
 # )
@@ -70,6 +71,9 @@ constDBSummaryDay = (
 #
 # ALTER TABLE public.tb_article_index
 #     ALTER COLUMN regdate SET DEFAULT now();
+#
+# ALTER TABLE public.tb_article_index
+#     ALTER COLUMN stat SET DEFAULT 1;
 
 
 
