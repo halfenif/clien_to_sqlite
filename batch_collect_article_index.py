@@ -8,8 +8,8 @@ import const_config
 import article_get_by_tor
 import db_article_index
 
-def get_list(bbs_class, socket_port):
-    for page in count(0):
+def get_list(bbs_class, socket_port, startpage=0):
+    for page in count(startpage):
         url = urljoin(const_config.get_baseurl(), bbs_class) + '?po=' + str(page)
 
         if const_config.get_request_type() == "TOR":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
         if const_config.get_request_type() == "TOR":
             tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-        get_list('park', socket_port)
+        get_list('park', socket_port, 10)
 
     finally:
         if const_config.get_request_type() == "TOR":
