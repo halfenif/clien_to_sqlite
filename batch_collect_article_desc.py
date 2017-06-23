@@ -1,4 +1,5 @@
 import sys
+from sys import exc_info
 import const_config
 import argparse
 import z_utils
@@ -32,19 +33,7 @@ def get_article(socket_port, seq):
 
         sys.stdout.flush()
 
-#---------------------------------
-# Main Suit
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Crawing Article')
-    parser.add_argument('-s', dest='startseq', action='store', type=int,
-                       default=0,
-                       help='Article Start Sequqnce')
-
-
-    parser.add_argument('-f', dest='filewrite', action='store_true',
-                       help='Request Out to Write File')
-
-    args = parser.parse_args()
+def tor_loop(args):
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process()
 
@@ -60,3 +49,25 @@ if __name__ == "__main__":
         get_article(socket_port, seq)
     finally:
         article_get_by_tor.kill_tor_process(tor_process)
+
+#---------------------------------
+# Main Suit
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Crawing Article')
+    parser.add_argument('-s', dest='startseq', action='store', type=int,
+                       default=0,
+                       help='Article Start Sequqnce')
+
+
+    parser.add_argument('-f', dest='filewrite', action='store_true',
+                       help='Request Out to Write File')
+
+    args = parser.parse_args()
+
+    while True:
+        try:
+            tor_loop(args)
+        except 'KeyboardInterrupt':
+            sys.exit(0)
+        except:
+            print("{}".format(exc_info()[0]))
