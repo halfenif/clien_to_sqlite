@@ -1,3 +1,5 @@
+import sys
+import argparse
 import requests
 import re
 from itertools import count
@@ -7,8 +9,9 @@ from urllib.parse import urlparse
 import const_config
 import article_get_by_tor
 import db_article_index
+import z_utils
 
-def get_list(bbs_class, socket_port, startpage=0):
+def get_list(bbs_class, socket_port, startpage=0, processid=0, filewrite=False):
     for page in count(startpage):
         url = urljoin(const_config.get_baseurl(), bbs_class) + '?po=' + str(page)
 
@@ -21,6 +24,8 @@ def get_list(bbs_class, socket_port, startpage=0):
 
         html = resutl_context
         #print(html)
+        if filewrite:
+            z_utils.strToFile(html, 'BBSList', 'html')
 
         soup = BeautifulSoup(html, 'html.parser')
 
@@ -32,17 +37,32 @@ def get_list(bbs_class, socket_port, startpage=0):
             #print(url_path_split, title)
 
             if url_path_split[0] == bbs_class:
-                db_article_index.insertItem(int(url_path_split[1]), bbs_class)
+                db_article_index.insertItem(int(url_path_split[1]), bbs_class, startpage, processid)
 
 
 #---------------------------------
 # Batch Suit
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Crawing BBS')
+    parser.add_argument('-s', dest='startpage', action='store', type=int, required=True,
+                       help='BBS Start Page(po=?)')
+    parser.add_argument('-p', dest='processid', action='store', type=int, required=True,
+                       help='Process ID for Monitoring')
+
+    parser.add_argument('-f', dest='filewrite', action='store_true',
+                       help='Request Out to Write File')
+
+    args = parser.parse_args()
+
+    #print('{}'.format(args))
+    # print(args.filewrite)
+    # sys.exit(0)
+
     try:
         if const_config.get_request_type() == "TOR":
             tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-        get_list('park', socket_port, 0) #InitValue
+        get_list('park', socket_port, args.startpage, args.processid, args.filewrite) #InitValue
 
     finally:
         if const_config.get_request_type() == "TOR":

@@ -56,12 +56,14 @@ def sqlGetMinSeq():
 
 #---------------------------------
 # SQL Article Insert
-def sqlInsert(result_index, result_bbsclass):
+def sqlInsert(result_index, result_bbsclass, collectpage, processid):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass) VALUES (',
-                                        Param(result_index),        ',',
-                                        Param(result_bbsclass),         ')'
+    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass, collectpage, processid) VALUES (',
+                                        Param(result_index),     ',',
+                                        Param(result_bbsclass),  ',',
+                                        Param(collectpage),      ',',
+                                        Param(processid),        ')'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
@@ -73,11 +75,11 @@ def sqlInsert(result_index, result_bbsclass):
 
 #---------------------------------
 # Article Logic - Insert or Skip
-def insertItem(result_index, result_bbsclass):
+def insertItem(result_index, result_bbsclass, collectpage, processid):
     if sqlExistCheck(result_index):
         print('[Exist  Article Index] ', result_index, result_bbsclass)
     else:
-        sqlInsert(result_index, result_bbsclass)
+        sqlInsert(result_index, result_bbsclass, collectpage, processid)
         #print('[Insert Article] ' + result_date_for_key + ':' + result_title)
         print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article Index', result_bbsclass, result_index)
     return

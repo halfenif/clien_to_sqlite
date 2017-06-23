@@ -24,65 +24,69 @@ def sqlExistCheck(seq):
 
 #---------------------------------
 # SQL Max Seq
-def sqlGetMaxSeq():
+def sqlGetMaxSeq(processid=0):
+    if processid == 0:
+        processid = const_config.get_start_port()
+
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT MAX(seq) seq FROM tb_article WHERE 1=', Param(1) ),
+    query, params = utils.formatQuery(('SELECT MAX(seq) seq FROM tb_article WHERE processid=', Param(processid) ),
                                        cur.paramstyle)
     cur.execute(query, params)
-    maxseq = cur.fetchone()
-    print(maxseq)
+    returnseq = cur.fetchone()
     conn.close()
 
-    if maxseq['seq'] == None:
+    if returnseq['seq'] == None:
         return 0
-    return maxseq['seq']
+    return returnseq['seq']
 
 #---------------------------------
 # SQL Min Seq
-def sqlGetMinSeq():
+def sqlGetMinSeq(processid=0):
+    if processid == 0:
+        processid = const_config.get_start_port()
+
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT MIN(seq) seq FROM tb_article WHERE 1=', Param(1) ),
+    query, params = utils.formatQuery(('SELECT MIN(seq) seq FROM tb_article WHERE processid=', Param(processid) ),
                                        cur.paramstyle)
     cur.execute(query, params)
-    maxseq = cur.fetchone()
-    print(maxseq)
+    returnseq = cur.fetchone()
     conn.close()
 
-    if maxseq['seq'] == None:
+    if returnseq['seq'] == None:
         return 0
-    return maxseq['seq']
+
+    return returnseq['seq']
 
 #---------------------------------
 # SQL Article Insert
-def sqlInsert(result_index, result_title, result_body, result_date_for_key, result_user):
+def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, title, body, pubdate, postuser) VALUES (',
-                                        Param(result_index),        ',',
-                                        Param(result_title),        ',',
-                                        Param(result_body),         ',',
-                                        Param(result_date_for_key), ',',
-                                        Param(result_user),         ')'
+    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, title, body, pubdate, postuser, processid) VALUES (',
+                                        Param(item['seq']),       ',',
+                                        Param(item['title']),     ',',
+                                        Param(item['body']),      ',',
+                                        Param(item['pubdate']),   ',',
+                                        Param(item['postuser']),  ',',
+                                        Param(item['processid']), ')'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
-
-    #cur.execute(constSQLInsert, (result_index, result_title, result_body, result_date_for_key, result_user,))
     conn.commit()
     conn.close()
     return
 
 #---------------------------------
 # Article Logic - Insert or Skip
-def insertItem(result_index, result_title, result_body, result_date_for_key, result_user):
-    if sqlExistCheck(result_index):
-        print('[Exist  Article] ' + result_title)
+def insertItem(item):
+    #
+    if sqlExistCheck(item['seq']):
+        print('[Exist  Article] ' + item['title'])
     else:
-        sqlInsert(result_index, result_title, result_body, result_date_for_key, result_user)
-        #print('[Insert Article] ' + result_date_for_key + ':' + result_title)
-        print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article', result_date_for_key, result_title)
+        sqlInsert(item)
+        print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article', item['seq'], item['title'])
     return
 
 #---------------------------------

@@ -9,13 +9,14 @@ def get_baseurl():
 def get_bbs_class():
     return 'park'
 
-def gey_url_by_seq(seq):
+def get_url_by_seq(seq):
     return get_baseurl() + get_bbs_class() + '/' + str(seq)
 
-def get_request_type():
-    #strType = "REQUEST"
-    strType = "TOR"
-    return strType
+def get_start_port():
+    return 7000 #Reserved
+
+def get_temp_cache_folder():
+    return './data_tor/'
 
 def testseq():
     #return 10718711 # 404 Not Found
