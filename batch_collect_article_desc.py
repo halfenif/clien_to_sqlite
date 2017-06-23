@@ -7,6 +7,8 @@ import article_parse
 import db_article
 import article_get_by_tor
 from itertools import count
+import time
+from time import gmtime, strftime
 
 def get_article(socket_port, seq):
     for i in count(1):
