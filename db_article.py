@@ -86,7 +86,7 @@ def insertItem(item):
         print('[Exist  Article] ' + item['title'])
     else:
         sqlInsert(item)
-        print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article', item['seq'], item['title'])
+        print("[ {} ][ {} ][ {} ] {}".format(time.strftime('%x %X', time.localtime()), item['pubdate'], item['seq'], item['title']))
     return
 
 #---------------------------------

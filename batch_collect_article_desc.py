@@ -6,9 +6,10 @@ import article_get
 import article_parse
 import db_article
 import article_get_by_tor
+from itertools import count
 
 def get_article(socket_port, seq):
-    while seq > 0:
+    for i in count(1):
         seq = seq - 1
         url = const_config.get_url_by_seq(seq)
 
@@ -20,8 +21,12 @@ def get_article(socket_port, seq):
             result['processid'] = socket_port
             db_article.insertItem(result)
 
-        if (seq % 100) == 0:
-            print('seq:' + str(seq))
+        if (i % 10) == 0:
+            print("[ {} ][ {} Called ]".format(time.strftime('%x %X', time.localtime()), i))
+
+        if seq == 0:
+            print("[ {} ][ {} Called ][ Seq is 0. END ]".format(time.strftime('%x %X', time.localtime()), i))
+            return
 
         sys.stdout.flush()
 

@@ -7,7 +7,7 @@ import article_get_by_tor
 
 import time
 from time import gmtime, strftime
-
+from itertools import count
 
 def get_seq():
     seq = db_article.sqlGetMaxSeq()
@@ -25,13 +25,16 @@ if __name__ == "__main__":
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-        while True:
+        for i in count(1):
             url = const_config.get_url_by_seq(seq)
             status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
 
             if status_code == '200':
-                resutl_title, resutl_body, resutl_time, result_user = article_parse.parse_article(resutl_context)
-                db_article.insertItem(seq, resutl_title, resutl_body, resutl_time, result_user)
+                result = article_parse.parse_article(resutl_context)
+                result['seq'] = seq
+                result['processid'] = socket_port
+                db_article.insertItem(result)
+
                 cnt_error = 0 #Reset Error
                 seq = seq + 1 #Next
             else:
@@ -44,8 +47,8 @@ if __name__ == "__main__":
                     print('Sleep:' + strftime("%Y-%m-%d %H:%M:%S", gmtime()) + ' : ' + str(seq))
                     time.sleep(1 * 60 * 1) #wait
 
-            if (seq % 10) == 0:
-                print('seq:' + str(seq))
+            if (i % 10) == 0:
+                print("[ {} ][ {} Called ]".format(time.strftime('%x %X', time.localtime()), i))
 
             sys.stdout.flush()
 

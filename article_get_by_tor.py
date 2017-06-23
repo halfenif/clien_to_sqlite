@@ -90,9 +90,10 @@ def get_article(url, socket_port):
     status_code = str(query.getinfo(pycurl.HTTP_CODE))
     if status_code == '200':
         out_return = out_io.getvalue().decode('utf-8','ignore')
-
-    print('[', time.strftime('%x %X', time.localtime()),']', 'Port:',socket_port,'StatusCode:',status_code, 'RequestTime:', round(time.time() - time_start), 'sec' , url)
-
+                #  [ 7000 ][ 200 ][ 5sec ]
+                #  [ 2017-06-10 09:06:05 ]
+    seq = url.replace(const_config.get_baseurl(),'').replace(const_config.get_bbs_class()+'/','')
+    print("[ {} ]                       [ {} ][ {}sec ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()), seq, round(time.time() - time_start), status_code, socket_port, const_config.get_bbs_class()  ))
     return status_code, out_return
 
 
