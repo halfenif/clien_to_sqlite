@@ -67,7 +67,7 @@ if __name__ == "__main__":
     while True:
         try:
             tor_loop(args)
-        except 'KeyboardInterrupt':
+        except KeyboardInterrupt:
             sys.exit(0)
         except:
             print("{}".format(exc_info()[0]))
