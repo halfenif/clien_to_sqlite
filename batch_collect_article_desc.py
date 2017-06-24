@@ -1,22 +1,27 @@
 import sys
-from sys import exc_info
+import os
 import const_config
 import argparse
+from itertools import count
+import time
+from time import gmtime, strftime
 import z_utils
 import article_get
 import article_parse
 import db_article
 import article_get_by_tor
-from itertools import count
-import time
-from time import gmtime, strftime
 
-def get_article(socket_port, seq):
+#---------------------------------
+# Article Get And DB Insert Loop
+def get_article(socket_port, seq, args):
     for i in count(1):
-        seq = seq - 1
+        seq -= 1
         url = const_config.get_url_by_seq(seq)
 
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
+
+        if args.filewrite:
+            z_utils.strToFile(html, 'Article', 'html')
 
         if status_code == '200':
             result = article_parse.parse_article(resutl_context)
@@ -33,6 +38,8 @@ def get_article(socket_port, seq):
 
         sys.stdout.flush()
 
+#---------------------------------
+# Tor Process Loop
 def tor_loop(args):
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process()
@@ -46,7 +53,7 @@ def tor_loop(args):
             seq = args.startseq
 
         print('Process ID:', socket_port, 'Start Seq:', seq)
-        get_article(socket_port, seq)
+        get_article(socket_port, seq, args)
     finally:
         article_get_by_tor.kill_tor_process(tor_process)
 
@@ -62,12 +69,17 @@ if __name__ == "__main__":
     parser.add_argument('-f', dest='filewrite', action='store_true',
                        help='Request Out to Write File')
 
+    #Parse Argument
     args = parser.parse_args()
 
     while True:
         try:
             tor_loop(args)
         except KeyboardInterrupt:
-            sys.exit(0)
+            print('KeyboardInterrupt. Cancled By Cntl+C')
+            try:
+                sys.exit(0)
+            except:
+                os._exit(0)
         except:
-            print("{}".format(exc_info()[0]))
+            print("{}".format(sys.exc_info()[0]))

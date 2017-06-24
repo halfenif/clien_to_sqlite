@@ -24,13 +24,10 @@ def sqlExistCheck(seq):
 
 #---------------------------------
 # SQL Max Seq
-def sqlGetMaxSeq(processid=0):
-    if processid == 0:
-        processid = const_config.get_start_port()
-
+def sqlGetMaxSeq():
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT MAX(seq) seq FROM tb_article WHERE processid=', Param(processid) ),
+    query, params = utils.formatQuery(('SELECT MAX(seq) seq FROM tb_article WHERE 1=', Param(1) ),
                                        cur.paramstyle)
     cur.execute(query, params)
     returnseq = cur.fetchone()
