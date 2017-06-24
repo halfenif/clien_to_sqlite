@@ -1,8 +1,3 @@
-import logging
-
-def set_log_level():
-    logging.basicConfig(level=logging.DEBUG)
-
 def get_baseurl():
     return 'https://www.clien.net/service/board/'
 
@@ -14,6 +9,9 @@ def get_url_by_seq(seq):
 
 def get_start_port():
     return 7000 #Reserved
+
+def get_agent_count():
+    return 20
 
 def get_temp_cache_folder():
     return './data_tor/'

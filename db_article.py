@@ -61,13 +61,13 @@ def sqlGetMinSeq(processid=0):
 def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, title, body, pubdate, postuser, processid) VALUES (',
+    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, bbsclass, title, body, pubdate, postuser ) VALUES (',
                                         Param(item['seq']),       ',',
+                                        Param(item['bbsclass']),  ',',
                                         Param(item['title']),     ',',
                                         Param(item['body']),      ',',
                                         Param(item['pubdate']),   ',',
-                                        Param(item['postuser']),  ',',
-                                        Param(item['processid']), ')'
+                                        Param(item['postuser']),  ')'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)

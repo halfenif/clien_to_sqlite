@@ -9,25 +9,45 @@ import z_utils
 import article_get
 import article_parse
 import db_article
+import db_agent
+import db_article_index
 import article_get_by_tor
 
 #---------------------------------
 # Article Get And DB Insert Loop
-def get_article(socket_port, seq, args):
-    for i in count(1):
-        seq -= 1
+def get_article(socket_port, target, args):
+    countok = 0
+    countfail = 0
+    for i, seq in enumerate(target, 1):
         url = const_config.get_url_by_seq(seq)
 
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
 
+        item = {}
+        item['seq'] = seq
+        item['processid'] = socket_port
+        item['bbsclass'] = const_config.get_bbs_class()
+        item['workstate'] = 1
+        item['resultstate'] = status_code
+
         if args.filewrite:
             z_utils.strToFile(html, 'Article', 'html')
 
+
         if status_code == '200':
-            result = article_parse.parse_article(resutl_context)
-            result['seq'] = seq
-            result['processid'] = socket_port
-            db_article.insertItem(result)
+            countok += 1
+            result_parse = article_parse.parse_article(resutl_context)
+            item.update(result_parse)
+            db_article.insertItem(item)
+        else:
+            countfail += 1
+
+        #Result update
+        item['countok'] = countok
+        item['countfail'] = countfail
+
+        db_article_index.sqlUpdate(item)
+        db_agent.setAgent(item)
 
         if (i % 10) == 0:
             print("[ {} ][ {} Called ]".format(time.strftime('%x %X', time.localtime()), i))
@@ -44,16 +64,23 @@ def tor_loop(args):
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process()
 
-        if args.startseq == 0:
-            seq = db_article.sqlGetMinSeq(socket_port)
-            if seq == 0:
-                print('New Process ID! Must Set Start Seq.')
-                sys.exit(0)
-        else:
-            seq = args.startseq
+        #Init Agent
+        item = {}
+        item['processid'] = socket_port
+        db_agent.initAgent(item)
 
-        print('Process ID:', socket_port, 'Start Seq:', seq)
-        get_article(socket_port, seq, args)
+        #Make Target
+        target = db_article_index.getTarget(item)
+
+        if len(target) == 0:
+            print('END: Target is Empty!!')
+            try:
+                sys.exit(0)
+            except:
+                os._exit(0)
+
+
+        get_article(socket_port, target, args)
     finally:
         article_get_by_tor.kill_tor_process(tor_process)
 

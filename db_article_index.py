@@ -55,34 +55,72 @@ def sqlGetMinSeq():
     return maxseq['seq']
 
 #---------------------------------
-# SQL Article Insert
-def sqlInsert(result_index, result_bbsclass, collectpage, processid):
+# SQL Article Index Insert
+def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass, collectpage, processid) VALUES (',
-                                        Param(result_index),     ',',
-                                        Param(result_bbsclass),  ',',
-                                        Param(collectpage),      ',',
-                                        Param(processid),        ')'
+    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass, processid) VALUES (',
+                                        Param(item['seq']),        ',',
+                                        Param(item['bbsclass']),   ',',
+                                        Param(item['processid']),  ')'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
+    conn.commit()
+    conn.close()
+    return
 
-    #cur.execute(constSQLInsert, (result_index, result_title, result_body, result_date_for_key, result_user,))
+#---------------------------------
+# SQL Article Index update
+def sqlUpdate(item):
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('UPDATE tb_article_index SET ',
+                                       'bbsclass=',    Param(item['bbsclass']),    ',',
+                                       'processid=',   Param(item['processid']),   ',',
+                                       'workstate=',   Param(item['workstate']),   ',',
+                                       'resultstate=', Param(item['resultstate']), ',',
+                                       'lastupdate= Now() '
+                                       'WHERE seq=',   Param(item['seq'])
+                                        ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
     conn.commit()
     conn.close()
     return
 
 #---------------------------------
 # Article Logic - Insert or Skip
-def insertItem(result_index, result_bbsclass, collectpage, processid):
-    if sqlExistCheck(result_index):
-        print('[Exist  Article Index] ', result_index, result_bbsclass)
+def insertItem(item):
+    if sqlExistCheck(item['seq']):
+        print('[ {} ][ Exist  Article Index ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['seq']))
     else:
-        sqlInsert(result_index, result_bbsclass, collectpage, processid)
-        #print('[Insert Article] ' + result_date_for_key + ':' + result_title)
-        print('[', time.strftime('%x %X', time.localtime()),']', 'Insert Article Index', result_bbsclass, result_index)
+        sqlInsert(item)
+        print('[ {} ][ Insert Article Index ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['seq']))
     return
+
+
+#---------------------------------
+# Make Target
+def getTarget(item):
+    target = set()
+
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE workstate = 0 AND processid = ',
+                                       Param(item['processid'])),
+                                       cur.paramstyle)
+    cur.execute(query, params)
+
+    for result in cur.fetchall():
+        target.add(result['seq'])
+
+    print('[ {} ][ Make Target Result ][ {} ]'.format(time.strftime('%x %X', time.localtime()), format(len(target),',')))
+    conn.close()
+
+    result = list(target)
+    result.sort(reverse=True)
+    return result
 
 #---------------------------------
 # Test Suit
