@@ -6,11 +6,11 @@ import time
 
 #---------------------------------
 # SQL Exist Check
-def sqlExistCheck(processid):
+def sqlExistCheck(agentid):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT processid FROM tb_agent WHERE processid = ',
-                                       Param(processid)),
+    query, params = utils.formatQuery(('SELECT agentid FROM tb_agent WHERE agentid = ',
+                                       Param(agentid)),
                                        cur.paramstyle)
     cur.execute(query, params)
 
@@ -23,12 +23,27 @@ def sqlExistCheck(processid):
 
 
 #---------------------------------
-# SQL Article Index Insert
+# SQL Agent Insert
 def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_agent (processid) VALUES (',
-                                        Param(item['processid']),  ')'
+    query, params = utils.formatQuery(('INSERT INTO tb_agent (agentid) VALUES (',
+                                        Param(item['agentid']),  ')'
+                                        ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
+    conn.commit()
+    conn.close()
+    return
+
+#---------------------------------
+# SQL Agent History
+def sqlInsertHist(item):
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('INSERT INTO tb_agent_hist',
+                                       "SELECT nextval('seq_agent_hist'), agentid, processid, lastseq, lastbbsclass, countok, countfail, begindate, lastupdate FROM tb_agent WHERE agentid=",
+                                        Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
@@ -42,11 +57,12 @@ def sqlUpdate(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
+                                       'processid=',         Param(item['processid']),   ',',
                                        'lastseq=',           Param(item['seq']),         ',',
                                        'countok=',           Param(item['countok']),     ',',
                                        'countfail=',         Param(item['countfail']),   ',',
                                        'lastupdate= Now()',
-                                       'WHERE processid=',   Param(item['processid'])
+                                       'WHERE agentid=',   Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
@@ -60,13 +76,14 @@ def sqlInitUpdate(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
+                                       'processid=',         Param(0),                            ',',
                                        'lastbbsclass=',      Param(const_config.get_bbs_class()), ',',
                                        'lastseq=',           Param(0),                            ',',
                                        'countok=',           Param(0),                            ',',
                                        'countfail=',         Param(0),                            ',',
                                        'begindate= Now()',                                        ',',
                                        'lastupdate= Now()',
-                                       'WHERE processid=',   Param(item['processid'])
+                                       'WHERE agentid=',   Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
@@ -78,20 +95,22 @@ def sqlInitUpdate(item):
 #---------------------------------
 # Agent Logic
 def initAgent(item):
-    if not sqlExistCheck(item['processid']):
+    if not sqlExistCheck(item['agentid']):
         sqlInsert(item)
-        print('[ {} ][ Insert Agent ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['processid']))
+        print('[ {} ][ Insert Agent ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['agentid']))
 
     sqlInitUpdate(item)
-
     return
 
+def logAgent(item):
+    sqlInsertHist(item)
+    return
 
 #---------------------------------
 # Agent Logic
 def setAgent(item):
-    if not sqlExistCheck(item['processid']):
-        raise Exception('Init Agent First: ProcessId: {}'.format(item['processid']))
+    if not sqlExistCheck(item['agentid']):
+        raise Exception('Init Agent First: AgentId: {}'.format(item['agentid']))
 
     sqlUpdate(item)
 

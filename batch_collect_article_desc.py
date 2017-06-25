@@ -25,7 +25,8 @@ def get_article(socket_port, target, args):
 
         item = {}
         item['seq'] = seq
-        item['processid'] = socket_port
+        item['agentid'] = socket_port
+        item['processid'] = os.getpid()
         item['bbsclass'] = const_config.get_bbs_class()
         item['workstate'] = 1
         item['resultstate'] = status_code
@@ -61,12 +62,13 @@ def get_article(socket_port, target, args):
 #---------------------------------
 # Tor Process Loop
 def tor_loop(args):
+
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process()
 
         #Init Agent
         item = {}
-        item['processid'] = socket_port
+        item['agentid'] = socket_port
         db_agent.initAgent(item)
 
         #Make Target
@@ -82,6 +84,7 @@ def tor_loop(args):
 
         get_article(socket_port, target, args)
     finally:
+        db_agent.logAgent(item)
         article_get_by_tor.kill_tor_process(tor_process)
 
 #---------------------------------

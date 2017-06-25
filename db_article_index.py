@@ -59,10 +59,10 @@ def sqlGetMinSeq():
 def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass, processid) VALUES (',
+    query, params = utils.formatQuery(('INSERT INTO tb_article_index (seq, bbsclass, agentid) VALUES (',
                                         Param(item['seq']),        ',',
                                         Param(item['bbsclass']),   ',',
-                                        Param(item['processid']),  ')'
+                                        Param(item['agentid']),    ')'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
@@ -77,7 +77,7 @@ def sqlUpdate(item):
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_article_index SET ',
                                        'bbsclass=',    Param(item['bbsclass']),    ',',
-                                       'processid=',   Param(item['processid']),   ',',
+                                       'agentid=',     Param(item['agentid']),     ',',
                                        'workstate=',   Param(item['workstate']),   ',',
                                        'resultstate=', Param(item['resultstate']), ',',
                                        'lastupdate= Now() '
@@ -107,8 +107,10 @@ def getTarget(item):
 
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE workstate = 0 AND processid = ',
-                                       Param(item['processid'])),
+    query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE workstate = 0 AND agentid = ',
+                                       Param(item['agentid']),
+                                       ' ORDER BY seq DESC LIMIT 100'
+                                       ),
                                        cur.paramstyle)
     cur.execute(query, params)
 

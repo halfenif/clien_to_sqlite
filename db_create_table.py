@@ -32,13 +32,14 @@ SELECT seq, 'park', title, body, pubdate, postuser, regdate FROM tb_article_back
 commit;
 
 #----------------------------------
+
 DROP TABLE public.tb_article_index;
 
 CREATE TABLE public.tb_article_index
 (
     seq integer NOT NULL,
     bbsclass text COLLATE pg_catalog."default" NOT NULL,
-    processid integer NOT NULL,
+    agentid integer NOT NULL,
     workstate integer NOT NULL,
     resultstate integer NOT NULL,
     regdate timestamp with time zone NOT NULL,
@@ -70,7 +71,7 @@ ALTER TABLE public.tb_article_index
     ALTER COLUMN resultstate SET DEFAULT 0;
 
 CREATE INDEX CONCURRENTLY tb_article_index_processid
-    ON public.tb_article_index(processid, workstate, seq);
+    ON public.tb_article_index(agentid, workstate, seq);
 
 CREATE INDEX CONCURRENTLY tb_article_index_workstate
     ON public.tb_article_index(workstate, seq);
@@ -87,6 +88,7 @@ DROP TABLE public.tb_agent;
 
 CREATE TABLE public.tb_agent
 (
+    agentid integer NOT NULL,
     processid integer NOT NULL,
     lastseq integer NOT NULL,
     lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
@@ -94,7 +96,7 @@ CREATE TABLE public.tb_agent
     countfail integer NOT NULL,
     begindate timestamp with time zone NOT NULL,
     lastupdate timestamp with time zone NOT NULL,
-    CONSTRAINT tb_agent_pkey PRIMARY KEY (processid)
+    CONSTRAINT tb_agent_pkey PRIMARY KEY (agentid)
 )
 WITH (
     OIDS = FALSE
@@ -103,6 +105,9 @@ TABLESPACE clien;
 
 ALTER TABLE public.tb_agent
     OWNER to clien;
+
+ALTER TABLE public.tb_agent
+    ALTER COLUMN processid SET DEFAULT 0;
 
 ALTER TABLE public.tb_agent
     ALTER COLUMN lastseq SET DEFAULT 0;
@@ -123,7 +128,48 @@ ALTER TABLE public.tb_agent
     ALTER COLUMN begindate SET DEFAULT now();
 
 ALTER TABLE public.tb_agent
-    ALTER COLUMN lastupdate SET DEFAULT now();   
+    ALTER COLUMN lastupdate SET DEFAULT now();
+
+#----------------------------------
+DROP SEQUENCE public.seq_agent_hist CASCADE;
+
+CREATE SEQUENCE public.seq_agent_hist;
+
+DROP TABLE public.tb_agent_hist;
+
+CREATE TABLE public.tb_agent_hist
+(
+    seq integer NOT NULL,
+    agentid integer NOT NULL,
+    processid integer NOT NULL,
+    lastseq integer NOT NULL,
+    lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
+    countok integer NOT NULL,
+    countfail integer NOT NULL,
+    begindate timestamp with time zone NOT NULL,
+    lastupdate timestamp with time zone NOT NULL,
+    CONSTRAINT tb_agent_hist_pkey PRIMARY KEY (seq)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE clien;
+
+ALTER TABLE public.tb_agent_hist
+    OWNER to clien;
+
+# ALTER TABLE public.tb_agent_hist
+#     ALTER COLUMN seq SET DEFAULT nextval('seq_agent_hist');
+#
+# ALTER SEQUENCE seq_agent_hist OWNED BY public.tb_agent_hist.seq;
+
+
+
+
+
+
+
+
 
 #---------------------------------
 # Folder Safe
