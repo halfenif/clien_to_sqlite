@@ -64,7 +64,7 @@ def get_article(socket_port, target, args):
 def tor_loop(args):
 
     try:
-        tor_process, socket_port = article_get_by_tor.get_tor_process()
+        tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
 
         #Init Agent
         item = {}
@@ -95,6 +95,9 @@ if __name__ == "__main__":
                        default=0,
                        help='Article Start Sequqnce')
 
+    parser.add_argument('-p', dest='socket_port', action='store', type=int,
+                       default=0,
+                       help='Socket Port for TOR')
 
     parser.add_argument('-f', dest='filewrite', action='store_true',
                        help='Request Out to Write File')

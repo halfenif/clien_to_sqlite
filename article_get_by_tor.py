@@ -31,9 +31,11 @@ def get_socket_port():
 
 #-------------------------------------------------------------------------------
 # Create
-def get_tor_process():
+def get_tor_process(socket_port=0):
     print('-------------------------------------------------------------------')
-    socket_port = get_socket_port()
+    if socket_port == 0:
+        socket_port = get_socket_port()
+        
     strDataFolder = const_config.get_temp_cache_folder() + str(socket_port)
     try:
         os.stat(strDataFolder)
