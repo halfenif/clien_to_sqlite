@@ -35,7 +35,7 @@ def get_tor_process(socket_port=0):
     print('-------------------------------------------------------------------')
     if socket_port == 0:
         socket_port = get_socket_port()
-        
+
     strDataFolder = const_config.get_temp_cache_folder() + str(socket_port)
     try:
         os.stat(strDataFolder)
@@ -95,7 +95,7 @@ def get_article(url, socket_port):
                 #  [ 7000 ][ 200 ][ 5sec ]
                 #  [ 2017-06-10 09:06:05 ]
     seq = url.replace(const_config.get_baseurl(),'').replace(const_config.get_bbs_class()+'/','')
-    print("[ {} ]                       [ {} ][ {}sec ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()), seq, round(time.time() - time_start), status_code, socket_port, const_config.get_bbs_class()  ))
+    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()), socket_port, seq, status_code, round(time.time() - time_start),  const_config.get_bbs_class()  ))
     return status_code, out_return
 
 

@@ -15,7 +15,7 @@ import article_get_by_tor
 
 #---------------------------------
 # Article Get And DB Insert Loop
-def get_article(socket_port, target, args):
+def get_article(socket_port, target, args,callcount):
     countok = 0
     countfail = 0
     for i, seq in enumerate(target, 1):
@@ -51,7 +51,7 @@ def get_article(socket_port, target, args):
         db_agent.setAgent(item)
 
         if (i % 10) == 0:
-            print("[ {} ][ {} Called ]".format(time.strftime('%x %X', time.localtime()), i))
+            print("[ {} ][ {}/{} Called ]".format(time.strftime('%x %X', time.localtime()), i, (callcount * len(target) + i )))
 
         if seq == 0:
             print("[ {} ][ {} Called ][ Seq is 0. END ]".format(time.strftime('%x %X', time.localtime()), i))
@@ -61,7 +61,7 @@ def get_article(socket_port, target, args):
 
 #---------------------------------
 # Tor Process Loop
-def tor_loop(args):
+def tor_loop(args, callcount):
 
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
@@ -76,13 +76,14 @@ def tor_loop(args):
 
         if len(target) == 0:
             print('END: Target is Empty!!')
-            try:
-                sys.exit(0)
-            except:
-                os._exit(0)
+            return
+            # try:
+            #     sys.exit(0)
+            # except:
+            #     os._exit(0)
 
 
-        get_article(socket_port, target, args)
+        get_article(socket_port, target, args, callcount)
     finally:
         db_agent.logAgent(item)
         article_get_by_tor.kill_tor_process(tor_process)
@@ -105,9 +106,9 @@ if __name__ == "__main__":
     #Parse Argument
     args = parser.parse_args()
 
-    while True:
+    for callcount in count(0):
         try:
-            tor_loop(args)
+            tor_loop(args, callcount)
         except KeyboardInterrupt:
             print('KeyboardInterrupt. Cancled By Cntl+C')
             try:

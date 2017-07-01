@@ -11,7 +11,7 @@ def get_start_port():
     return 7000 #Reserved
 
 def get_agent_count():
-    return 20
+    return 40
 
 def get_temp_cache_folder():
     return './data_tor/'
