@@ -13,6 +13,9 @@ def get_start_port():
 def get_agent_count():
     return 40
 
+def get_target_make_count():
+    return 100
+
 def get_temp_cache_folder():
     return './data_tor/'
 
@@ -24,5 +27,5 @@ def testseqerror():
     return 10718711 # 404 Not Found
 
 def testurl():
-    testurl = get_baseurl() + str(testseq())
+    testurl = get_url_by_seq(testseq())
     return testurl

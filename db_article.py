@@ -3,6 +3,7 @@ import const_dbms
 from dbms import utils
 from dbms.utils import Param, NamedParam
 import time
+import textwrap
 
 #---------------------------------
 # SQL Exist Check
@@ -83,7 +84,13 @@ def insertItem(item):
         print('[Exist  Article] ' + item['title'])
     else:
         sqlInsert(item)
-        print("[ {} ][ {} ][ {} ][ {} ] {}".format(time.strftime('%x %X', time.localtime()), item['pubdate'], item['agentid'], format(item['seq'],","), item['title']))
+        print("[ {} ][ {} ][ {} ][ {} ] {}".format(time.strftime('%x %X',
+                                                   time.localtime()),
+                                                   item['pubdate'],
+                                                   item['agentid'],
+                                                   format(item['seq'],","),
+                                                   textwrap.shorten(item['title'],width=15, placeholder="...")
+                                                   ))
     return
 
 #---------------------------------

@@ -18,8 +18,10 @@ import article_get_by_tor
 def get_article(socket_port, target, args, callcount):
     countok = 0
     countfail = 0
-    for i, seq in enumerate(target, 1):
-        url = const_config.get_url_by_seq(seq)
+    for i, row in enumerate(target, 1):
+        seq = row['seq']
+        bbsclass = row['bbsclass']
+        url = const_config.get_baseurl() + bbsclass + '/' + str(seq)
 
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
 

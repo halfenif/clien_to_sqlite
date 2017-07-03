@@ -103,26 +103,24 @@ def insertItem(item):
 #---------------------------------
 # Make Target
 def getTarget(item):
-    target = set()
+    target = []
 
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE workstate = 0 AND agentid = ',
+    query, params = utils.formatQuery(('SELECT seq, bbsclass FROM tb_article_index WHERE workstate = 0 AND agentid = ',
                                        Param(item['agentid']),
-                                       ' ORDER BY seq DESC LIMIT 100'
+                                       ' ORDER BY seq DESC LIMIT ' + str(const_config.get_target_make_count())
                                        ),
                                        cur.paramstyle)
     cur.execute(query, params)
 
     for result in cur.fetchall():
-        target.add(result['seq'])
+        target.append(result)
 
     print('[ {} ][ Make Target Result ][ {} ]'.format(time.strftime('%x %X', time.localtime()), format(len(target),',')))
     conn.close()
 
-    result = list(target)
-    result.sort(reverse=True)
-    return result
+    return target
 
 #---------------------------------
 # Test Suit
