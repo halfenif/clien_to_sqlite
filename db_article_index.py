@@ -21,7 +21,6 @@ def sqlExistCheck(seq):
     conn.close()
     return bExist
 
-
 #---------------------------------
 # SQL Max Seq
 def sqlGetMaxSeq():
@@ -121,6 +120,64 @@ def getTarget(item):
     conn.close()
 
     return target
+
+#---------------------------------
+# SQL Exist Check for Update
+def sqlExistCheckForStatusUpdate(bbsclass, seq):
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('SELECT bbsclass, workstate, resultstate, agentid FROM tb_article_index WHERE seq = ',
+                                       Param(seq)),
+                                       cur.paramstyle)
+    cur.execute(query, params)
+    search_item = cur.fetchone()
+    conn.close()
+
+    #DB for Insert or Update
+    item = {}
+    item['seq'] = seq
+    item['bbsclass'] = bbsclass
+    item['agentid'] = const_config.get_start_port() + (seq % const_config.get_agent_count()) #For new item
+    item['workstate'] = 0
+    item['resultstate'] = 0
+
+    if search_item == None:
+        sqlInsert(item)
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+                                               'Insert New'.ljust(20),
+                                               item['agentid'],
+                                               format(item['seq'],","),
+                                               bbsclass
+                                               ))
+    elif item['workstate'] == 1 and item['resultstate'] != 200:
+        item['agentid'] = search_item['agentid']
+        sqlUpdate(item)
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+                                               'Update Not 200'.ljust(20),
+                                               item['agentid'],
+                                               format(item['seq'],","),
+                                               bbsclass
+                                               ))
+    elif item['workstate'] == 9:
+        item['agentid'] = search_item['agentid']
+        sqlUpdate(item)
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+                                               'Update for 9'.ljust(20),
+                                               item['agentid'],
+                                               format(item['seq'],","),
+                                               bbsclass
+                                               ))
+    else :
+        msg = 'Skip:' + str(item['workstate']) + '/' + str(item['resultstate'])
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+                                               msg.ljust(20),
+                                               item['agentid'],
+                                               format(item['seq'],","),
+                                               bbsclass
+                                               ))
+
+    return
+
 
 #---------------------------------
 # Test Suit

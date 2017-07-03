@@ -1,6 +1,9 @@
 def get_baseurl():
     return 'https://www.clien.net/service/board/'
 
+def get_indexurl():
+    return 'https://www.clien.net/service/group/board_all/'
+
 def get_bbs_class():
     return 'park'
 

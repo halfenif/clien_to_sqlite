@@ -23,19 +23,18 @@ def get_article(socket_port, target, args, callcount):
         bbsclass = row['bbsclass']
         url = const_config.get_baseurl() + bbsclass + '/' + str(seq)
 
-        status_code, resutl_context = article_get_by_tor.get_article(url, socket_port)
+        status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, seq)
 
         item = {}
         item['seq'] = seq
         item['agentid'] = socket_port
         item['processid'] = os.getpid()
-        item['bbsclass'] = const_config.get_bbs_class()
+        item['bbsclass'] = bbsclass
         item['workstate'] = 1
         item['resultstate'] = status_code
 
         if args.filewrite:
             z_utils.strToFile(html, 'Article', 'html')
-
 
         if status_code == '200':
             countok += 1

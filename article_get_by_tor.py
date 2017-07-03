@@ -9,6 +9,9 @@ import time
 import socket
 import os
 import const_config
+import re
+from urllib.parse import urljoin
+from urllib.parse import urlparse
 
 def get_socket_port():
     SOCKS_PORT = const_config.get_start_port()
@@ -73,7 +76,7 @@ def kill_tor_process(tor_process):
 
 #-------------------------------------------------------------------------------
 # Call
-def get_article(url, socket_port):
+def get_article(url, socket_port, seq=0):
     #print('article_get_by_tor.get_article()')
     time_start = time.time()
 
@@ -92,16 +95,17 @@ def get_article(url, socket_port):
     status_code = str(query.getinfo(pycurl.HTTP_CODE))
     if status_code == '200':
         out_return = out_io.getvalue().decode('utf-8','ignore')
-                #  [ 7000 ][ 200 ][ 5sec ]
-                #  [ 2017-06-10 09:06:05 ]
-    seq = url.replace(const_config.get_baseurl(),'').replace(const_config.get_bbs_class()+'/','')
-    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()), socket_port, format(int(seq),','), status_code, round(time.time() - time_start),  const_config.get_bbs_class()  ))
+
+    url_path_split = [x for x in re.sub(r':?service|board','',urlparse(url).path).split('/') if x]
+    bbsclass = url_path_split[0]
+    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+                                                                                  socket_port,
+                                                                                  format(int(seq),','),
+                                                                                  status_code,
+                                                                                  round(time.time() - time_start),
+                                                                                  bbsclass
+                                                                                  ))
     return status_code, out_return
-
-
-
-
-
 
 #---------------------------------
 # Main
