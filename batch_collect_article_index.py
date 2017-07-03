@@ -46,6 +46,7 @@ def get_list(socket_port, args, callcount):
 
             # if url_path_split[0] == bbs_class:
             #     db_article_index.insertItem(int(url_path_split[1]), bbs_class, startpage, processid)
+            sys.stdout.flush()
 
 
 
