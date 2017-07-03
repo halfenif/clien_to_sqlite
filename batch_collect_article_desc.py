@@ -15,7 +15,7 @@ import article_get_by_tor
 
 #---------------------------------
 # Article Get And DB Insert Loop
-def get_article(socket_port, target, args,callcount):
+def get_article(socket_port, target, args, callcount):
     countok = 0
     countfail = 0
     for i, seq in enumerate(target, 1):
@@ -37,7 +37,7 @@ def get_article(socket_port, target, args,callcount):
 
         if status_code == '200':
             countok += 1
-            result_parse = article_parse.parse_article(resutl_context)
+            result_parse = article_parse.parse_article(resutl_context, seq)
             item.update(result_parse)
             db_article.insertItem(item)
         else:

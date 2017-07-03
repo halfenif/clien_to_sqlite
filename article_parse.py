@@ -4,10 +4,11 @@ import html
 import re
 import requests
 from bs4 import BeautifulSoup
+import z_utils
 
 import article_get
 
-def parse_article(content):
+def parse_article(content, seq=0):
     result = {}
     result['title'] = ''
     result['body'] = ''
@@ -26,6 +27,7 @@ def parse_article(content):
 
     except Exception as e:
         print('Parse Exception:', sys.exc_info()[0])
+        z_utils.strToFile(content,'ParseError_' + str(seq),'html')
 
     return result
 

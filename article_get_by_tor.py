@@ -95,7 +95,7 @@ def get_article(url, socket_port):
                 #  [ 7000 ][ 200 ][ 5sec ]
                 #  [ 2017-06-10 09:06:05 ]
     seq = url.replace(const_config.get_baseurl(),'').replace(const_config.get_bbs_class()+'/','')
-    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()), socket_port, format(seq,","), status_code, round(time.time() - time_start),  const_config.get_bbs_class()  ))
+    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()), socket_port, format(int(seq),','), status_code, round(time.time() - time_start),  const_config.get_bbs_class()  ))
     return status_code, out_return
 
 
