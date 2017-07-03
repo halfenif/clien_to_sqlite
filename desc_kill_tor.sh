@@ -1,1 +1,1 @@
-ps -ef | grep __ReloadTorrcOnSIGHUP| awk '{print $2}' | xargs kill -9
+ps -ef | grep tor| awk '{print $2}' | xargs kill -9
