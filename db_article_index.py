@@ -133,6 +133,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
     search_item = cur.fetchone()
     conn.close()
 
+    db_result = 1 # Success
     #DB for Insert or Update
     item = {}
     item['seq'] = seq
@@ -144,7 +145,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
     if search_item == None:
         sqlInsert(item)
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
-                                               'Insert New'.ljust(20),
+                                               'Insert New'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
                                                bbsclass
@@ -153,7 +154,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
-                                               'Update Not 200'.ljust(20),
+                                               'Update Not 200'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
                                                bbsclass
@@ -162,7 +163,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
-                                               'Update for 9'.ljust(20),
+                                               'Update for 9'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
                                                bbsclass
@@ -170,13 +171,14 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
     else :
         msg = 'Skip:' + str(item['workstate']) + '/' + str(item['resultstate'])
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
-                                               msg.ljust(20),
+                                               msg.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
                                                bbsclass
                                                ))
+        db_result = 0 # Skip
 
-    return
+    return db_result
 
 
 #---------------------------------

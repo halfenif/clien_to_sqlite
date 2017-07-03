@@ -1,4 +1,5 @@
 import sys
+import os
 import argparse
 import requests
 import re
@@ -14,6 +15,8 @@ import z_utils
 import time
 
 def get_list(socket_port, args, callcount):
+    countok = 0
+    countfail = 0
     for page in count(args.startpage):
         url = const_config.get_indexurl() + '?po=' + str(page)
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, page)
@@ -38,15 +41,26 @@ def get_list(socket_port, args, callcount):
             bbsclass = url_path_split[0]
             seq = int(url_path_split[1])
 
+            db_result = 0
             if bbsclass not in ['notice', 'rule']:
-                db_article_index.sqlExistCheckForStatusUpdate(bbsclass, seq)
+                db_result = db_article_index.sqlExistCheckForStatusUpdate(bbsclass, seq)
+                if db_result == 0:
+                    countfail += 1
+                else:
+                    countok += 1
 
-            # title = article.text.replace('\0','').strip()
-            # print(url_path_split, title)
-
-            # if url_path_split[0] == bbs_class:
-            #     db_article_index.insertItem(int(url_path_split[1]), bbs_class, startpage, processid)
             sys.stdout.flush()
+
+        item = {}
+        item['seq'] = page
+        item['agentid'] = socket_port
+        item['processid'] = os.getpid()
+        item['bbsclass'] = bbsclass
+        item['workstate'] = 1
+        item['resultstate'] = status_code
+        item['countok'] = countok
+        item['countfail'] = countfail
+        db_agent.setAgent(item)
 
 
 
