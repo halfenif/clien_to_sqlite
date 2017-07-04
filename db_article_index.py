@@ -150,7 +150,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
                                                format(item['seq'],","),
                                                bbsclass
                                                ))
-    elif item['workstate'] == 1 and item['resultstate'] != 200:
+    elif search_item['workstate'] == 1 and search_item['resultstate'] != 200:
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
@@ -159,7 +159,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
                                                format(item['seq'],","),
                                                bbsclass
                                                ))
-    elif item['workstate'] == 9:
+    elif search_item['workstate'] == 9:
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
@@ -169,7 +169,7 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
                                                bbsclass
                                                ))
     else :
-        msg = 'Skip:' + str(item['workstate']) + '/' + str(item['resultstate'])
+        msg = 'Skip:' + str(search_item['workstate']) + '/' + str(search_item['resultstate'])
         print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                msg.ljust(19),
                                                item['agentid'],
