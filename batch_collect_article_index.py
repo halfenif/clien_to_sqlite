@@ -17,8 +17,17 @@ import time
 def get_list(socket_port, args, callcount):
     countok = 0
     countfail = 0
+    baseurl = ''
+
+    print(args.targetboard)
+
+    if args.targetboard == 'board':
+        baseurl = const_config.get_boardurl()
+    elif args.targetboard == 'cm':
+        baseurl = const_config.get_cmurl()
+
     for page in count(args.startpage):
-        url = const_config.get_indexurl() + '?po=' + str(page)
+        url =  baseurl + '?po=' + str(page)
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, page)
 
         if status_code != '200':
@@ -96,6 +105,10 @@ if __name__ == "__main__":
 
     parser.add_argument('-f', dest='filewrite', action='store_true',
                        help='Request Out to Write File')
+
+    parser.add_argument('-t', dest='targetboard', action='store',
+                       required=True, choices=['board', 'cm'],
+                       help='Index Page Type')
 
     #Parse Argument
     args = parser.parse_args()
