@@ -71,9 +71,16 @@ def sqlInsert(item):
                                         Param(item['postuser']),  ')'
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_article.sqlInsert.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_article.sqlInsert.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------

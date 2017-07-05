@@ -31,9 +31,16 @@ def sqlInsert(item):
                                         Param(item['agentid']),  ')'
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_agent.sqlInsert.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_agent.sqlInsert.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------
@@ -46,9 +53,16 @@ def sqlInsertHist(item):
                                         Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_agent.sqlInsertHist.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_agent.sqlInsertHist.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------
@@ -65,9 +79,16 @@ def sqlUpdate(item):
                                        'WHERE agentid=',   Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_agent.sqlUpdate.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_agent.sqlUpdate.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------
@@ -86,9 +107,16 @@ def sqlInitUpdate(item):
                                        'WHERE agentid=',   Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_agent.sqlInitUpdate.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_agent.sqlInitUpdate.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 

@@ -19,8 +19,6 @@ def get_list(socket_port, args, callcount):
     countfail = 0
     baseurl = ''
 
-    print(args.targetboard)
-
     if args.targetboard == 'board':
         baseurl = const_config.get_boardurl()
     elif args.targetboard == 'cm':

@@ -64,9 +64,18 @@ def sqlInsert(item):
                                         Param(item['agentid']),    ')'
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_article_index.sqlInsert.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_article_index.sqlInsert.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
+
     return
 
 #---------------------------------
@@ -83,9 +92,16 @@ def sqlUpdate(item):
                                        'WHERE seq=',   Param(item['seq'])
                                         ),
                                        cur.paramstyle)
-    cur.execute(query, params)
-    conn.commit()
-    conn.close()
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_article_index.sqlUpdate.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_article_index.sqlUpdate.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------
