@@ -131,10 +131,6 @@ ALTER TABLE public.tb_agent
     ALTER COLUMN lastupdate SET DEFAULT now();
 
 #----------------------------------
-DROP SEQUENCE public.seq_agent_hist CASCADE;
-
-CREATE SEQUENCE public.seq_agent_hist;
-
 DROP TABLE public.tb_agent_hist;
 
 CREATE TABLE public.tb_agent_hist
@@ -157,6 +153,13 @@ TABLESPACE clien;
 
 ALTER TABLE public.tb_agent_hist
     OWNER to clien;
+
+#----------------------------------
+DROP SEQUENCE public.seq_agent_hist CASCADE;
+
+CREATE SEQUENCE public.seq_agent_hist;
+
+ALTER SEQUENCE seq_agent_hist RESTART WITH 16891; #select max(seq) from tb_agent_hist;
 
 # ALTER TABLE public.tb_agent_hist
 #     ALTER COLUMN seq SET DEFAULT nextval('seq_agent_hist');

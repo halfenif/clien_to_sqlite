@@ -3,6 +3,7 @@ import const_dbms
 from dbms import utils
 from dbms.utils import Param, NamedParam
 import time
+import psycopg2
 
 #---------------------------------
 # SQL Exist Check

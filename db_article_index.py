@@ -3,6 +3,7 @@ import const_dbms
 from dbms import utils
 from dbms.utils import Param, NamedParam
 import time
+import psycopg2
 
 #---------------------------------
 # SQL Exist Check
@@ -30,7 +31,6 @@ def sqlGetMaxSeq():
                                        cur.paramstyle)
     cur.execute(query, params)
     maxseq = cur.fetchone()
-    print(maxseq)
     conn.close()
 
     if maxseq['seq'] == None:
@@ -46,7 +46,6 @@ def sqlGetMinSeq():
                                        cur.paramstyle)
     cur.execute(query, params)
     maxseq = cur.fetchone()
-    print(maxseq)
     conn.close()
 
     if maxseq['seq'] == None:

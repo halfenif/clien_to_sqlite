@@ -4,6 +4,7 @@ from dbms import utils
 from dbms.utils import Param, NamedParam
 import time
 import textwrap
+import psycopg2
 
 #---------------------------------
 # SQL Exist Check
