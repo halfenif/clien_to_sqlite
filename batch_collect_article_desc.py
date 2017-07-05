@@ -118,5 +118,7 @@ if __name__ == "__main__":
                 os._exit(0)
         except:
             print("{}".format(sys.exc_info()[0]))
+            print("{}".format(sys.exc_info()[1]))
+            print("{}".format(sys.exc_info()[2]))
             print('Sleep 30sec for socket End')
             time.sleep(30)
