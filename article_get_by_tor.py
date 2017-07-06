@@ -57,6 +57,9 @@ def get_tor_process(socket_port=0):
         timeout = 90,
     )
 
+    print('Type of Tor Process:', type(tor_process))
+    print('PID of Tor Process:', tor_process.pid)
+
     return tor_process, socket_port
 
 #-------------------------------------------------------------------------------
