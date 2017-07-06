@@ -15,7 +15,9 @@ def get_target():
     cur = conn.cursor()
     query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE 1=',
                                         Param(1),
-                                        'AND resultstate <> 200'
+                                        'AND workstate = 0 ',
+                                        'AND seq >= 5000000 ',
+                                        'ORDER BY seq DESC'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
