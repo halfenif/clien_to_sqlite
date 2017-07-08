@@ -1,3 +1,4 @@
+import sys
 import const_config
 import const_dbms
 from dbms import utils
@@ -68,6 +69,7 @@ def main():
             conn.commit()
             cnt_not_commit = 0
             print('[ {} ][ Processing Commited ][ {} ][ {}% ]'.format(time.strftime('%x %X', time.localtime()), format(cnt_total,','), round((cnt_total/len(set_target)*100),2)))
+            sys.stdout.flush()
 
     #Last Commited
     conn.commit()
