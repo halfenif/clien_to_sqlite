@@ -52,7 +52,7 @@ def get_article(socket_port, target, args, callcount):
         db_agent.setAgent(item)
 
         if (i % 10) == 0:
-            print("[ {} ][ {}/{} Called ][ {} ]".format(time.strftime('%x %X', time.localtime()), i, (callcount * len(target) + i ), socket_port))
+            print("[ {} ][ {}/{} Called ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()), i, (callcount * len(target) + i ), socket_port, format(seq,',')))
 
         if seq == 0:
             print("[ {} ][ {} Called ][ {} ][ Seq is 0. END ]".format(time.strftime('%x %X', time.localtime()), i, socket_port))
