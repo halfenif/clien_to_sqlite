@@ -63,13 +63,14 @@ def get_article(socket_port, target, args, callcount):
 #---------------------------------
 # Tor Process Loop
 def tor_loop(args, callcount):
+    #Init Agent
+    item = {}
+    item['agentid'] = args.socket_port
 
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
-
-        #Init Agent
-        item = {}
         item['agentid'] = socket_port
+
         db_agent.initAgent(item)
 
         #Make Target
