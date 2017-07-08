@@ -16,16 +16,19 @@ def get_target():
     query, params = utils.formatQuery(('SELECT seq FROM tb_article_index WHERE 1=',
                                         Param(1),
                                         'AND workstate = 0 ',
-                                        'AND seq >= 5000000 ',
                                         'ORDER BY seq DESC'
                                         ),
                                        cur.paramstyle)
     cur.execute(query, params)
 
-    for row in cur.fetchall():
+    for i, row in enumerate(cur.fetchall()):
         set_target.add(row['seq'])
 
+        if (i % 1000) == 0:
+            print('Target Make:', format(i,','))
+
     print('[ {} ][ Target Fetch End ][ {} ]'.format(time.strftime('%x %X', time.localtime()), format(len(set_target),',')))
+    conn.close()
     return set_target
 
 
