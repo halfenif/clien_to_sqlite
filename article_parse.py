@@ -40,7 +40,7 @@ def parse_article(content, seq=0):
 if __name__ == "__main__":
 
     #url = const_config.get_url_by_seq(const_config.testseq())
-    url = const_config.get_url_by_seq(9096962)
+    url = const_config.get_url_by_seq(2823857)
 
     content = article_get.__test__(url)
     result = parse_article(content)

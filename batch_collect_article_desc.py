@@ -52,13 +52,8 @@ def get_article(socket_port, target, args, callcount):
         db_agent.setAgent(item)
 
         if (i % 10) == 0:
-            print("[ {} ][ {}/{} Called ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()), i, (callcount * len(target) + i ), socket_port, format(seq,',')))
-
-        if seq == 0:
-            print("[ {} ][ {} Called ][ {} ][ Seq is 0. END ]".format(time.strftime('%x %X', time.localtime()), i, socket_port))
-            return
-
-        sys.stdout.flush()
+            print("[ {} ]                       [ {} ][ {} ][ {}/{} Called ]".format(time.strftime('%x %X', time.localtime()), socket_port, format(seq,','), i, (callcount * len(target) + i )))
+            sys.stdout.flush()
 
 #---------------------------------
 # Tor Process Loop
@@ -86,9 +81,14 @@ def tor_loop(args, callcount):
 
 
         get_article(socket_port, target, args, callcount)
+    except:
+        print("tor_loop:{}".format(sys.exc_info()[0]))
+        print("tor_loop:{}".format(sys.exc_info()[1]))
+        print("tor_loop:{}".format(sys.exc_info()[2]))
     finally:
         db_agent.logAgent(item)
-        article_get_by_tor.kill_tor_process(tor_process)
+        if tor_process != None:
+            article_get_by_tor.kill_tor_process(tor_process)
 
 #---------------------------------
 # Main Suit
@@ -118,8 +118,8 @@ if __name__ == "__main__":
             except:
                 os._exit(0)
         except:
-            print("{}".format(sys.exc_info()[0]))
-            print("{}".format(sys.exc_info()[1]))
-            print("{}".format(sys.exc_info()[2]))
+            print("__name__:{}".format(sys.exc_info()[0]))
+            print("__name__:{}".format(sys.exc_info()[1]))
+            print("__name__:{}".format(sys.exc_info()[2]))
             print('Sleep 30sec for socket End')
             time.sleep(30)

@@ -19,23 +19,22 @@ def get_socket_port():
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(2)                     #2 Second Timeout
 
-    print('Check Socket port:', SOCKS_PORT)
+    print('[ {} ]                       [ Check Socket port ][ {} ]'.format(time.strftime('%x %X', time.localtime()), SOCKS_PORT))
     for i in count(1):
         try:
             sock.bind(('127.0.0.1',SOCKS_PORT))
         except:
-            print(i, 'Used Port No:', SOCKS_PORT)
+            print('[ {} ]                       [ Used Port No ][ {} ]'.format(time.strftime('%x %X', time.localtime()), SOCKS_PORT))
             SOCKS_PORT += 1
         else:
-            print(i, 'OK! SOCKS_PORT:', SOCKS_PORT)
+            print('[ {} ]                       [ OK! SOCKS_PORT ][ {} ]'.format(time.strftime('%x %X', time.localtime()), SOCKS_PORT))
             return SOCKS_PORT
-
 
 
 #-------------------------------------------------------------------------------
 # Create
 def get_tor_process(socket_port=0):
-    print('-------------------------------------------------------------------')
+    # print('-------------------------------------------------------------------')
     if socket_port == 0:
         socket_port = get_socket_port()
 
@@ -57,8 +56,8 @@ def get_tor_process(socket_port=0):
         timeout = 90,
     )
 
-    print('Type of Tor Process:', type(tor_process))
-    print('PID of Tor Process:', tor_process.pid)
+    # print('Type of Tor Process:', type(tor_process))
+    # print('PID of Tor Process:', tor_process.pid)
 
     return tor_process, socket_port
 
@@ -66,10 +65,12 @@ def get_tor_process(socket_port=0):
 # BootStrap
 def print_bootstarp_lines(line):
     #print("line:" + line)
+    #Jul 10 19:31:06.000 [notice] Bootstrapped 90%: Establishing a Tor circuit
     if "Bootstrapped" in line:
         #print(term.format(line, term.Color.BLUE))
-        print(line)
-        pass
+        idx = line.index("Bootstrapped")
+        #print(line)
+        print("[ {} ]                       [ {} ]".format(time.strftime('%x %X', time.localtime()), line[idx:]))
 
 #-------------------------------------------------------------------------------
 # Kill
