@@ -58,6 +58,7 @@ def get_article(socket_port, target, args, callcount):
 #---------------------------------
 # Tor Process Loop
 def tor_loop(args, callcount):
+    tor_process = None
     #Init Agent
     item = {}
     item['agentid'] = args.socket_port

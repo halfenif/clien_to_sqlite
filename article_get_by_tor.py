@@ -70,7 +70,7 @@ def print_bootstarp_lines(line):
         #print(term.format(line, term.Color.BLUE))
         idx = line.index("Bootstrapped")
         #print(line)
-        print("[ {} ]                       [ {} ]".format(time.strftime('%x %X', time.localtime()), line[idx:]))
+        print("[ {} ]                       [ ---- ][ {} ]".format(time.strftime('%x %X', time.localtime()), line[idx:]))
 
 #-------------------------------------------------------------------------------
 # Kill

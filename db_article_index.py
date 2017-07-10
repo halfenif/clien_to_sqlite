@@ -131,7 +131,7 @@ def getTarget(item):
     for result in cur.fetchall():
         target.append(result)
 
-    print('[ {} ]                       [ Make Target Result ][ {} ]'.format(time.strftime('%x %X', time.localtime()), format(len(target),',')))
+    print('[ {} ]                       [ {} ][ Make Target Result ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['agentid'], format(len(target),',')))
     conn.close()
 
     return target
