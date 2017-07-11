@@ -137,6 +137,28 @@ def getTarget(item):
     return target
 
 #---------------------------------
+# Make Target
+def getTargetForBbsclass(item):
+    target = []
+
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('SELECT seq, bbsclass FROM tb_article_index WHERE workstate = 1 AND resultstate = 400 AND agentid = ',
+                                       Param(item['agentid']),
+                                       ' ORDER BY seq DESC LIMIT ' + str(const_config.get_target_make_count())
+                                       ),
+                                       cur.paramstyle)
+    cur.execute(query, params)
+
+    for result in cur.fetchall():
+        target.append(result)
+
+    print('[ {} ]                       [ {} ][ Make Target Result ][ {} ]'.format(time.strftime('%x %X', time.localtime()), item['agentid'], format(len(target),',')))
+    conn.close()
+
+    return target
+
+#---------------------------------
 # SQL Exist Check for Update
 def sqlExistCheckForStatusUpdate(bbsclass, seq):
     conn = const_dbms.get_conn()
