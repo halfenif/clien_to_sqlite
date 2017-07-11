@@ -42,15 +42,20 @@ def get_list(socket_port, args, callcount):
 
         soup = BeautifulSoup(resutl_context, 'html.parser')
 
-        for article in soup.find_all('a', attrs={"class": "list-subject"}):
-            #url_path_split= list(filter(lambda x:x,re.split('[/]',re.sub(r':?service|board','',urlparse(article['href']).path))))
-            url_path_split = [x for x in re.sub(r':?service|board','',urlparse(article['href']).path).split('/') if x]
+        for list_row in soup.find_all('div', attrs={"class": "list-row symph-row"}):
+
+            #Find Link
+            list_subject = list_row.find('a', attrs={"class": "list-subject"})
+            url_path_split = [x for x in re.sub(r':?service|board','',urlparse(list_subject['href']).path).split('/') if x]
             bbsclass = url_path_split[0]
             seq = int(url_path_split[1])
 
+            #Find time
+            list_time = list_row.find('div', attrs={"class": "list-time"}).find('span', attrs={"class": "timestamp"}).text
+
             db_result = 0
             if bbsclass not in ['notice', 'rule']:
-                db_result = db_article_index.sqlExistCheckForStatusUpdate(bbsclass, seq)
+                db_result = db_article_index.sqlExistCheckForStatusUpdate(bbsclass, seq, page, list_time)
                 if db_result == 0:
                     countfail += 1
                 else:
@@ -74,12 +79,14 @@ def get_list(socket_port, args, callcount):
 #---------------------------------
 # Tor Process Loop
 def tor_loop(args, callcount):
+    #Init Agent
+    item = {}
+    item['agentid'] = args.socket_port #init
+    tor_process = None
 
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
 
-        #Init Agent
-        item = {}
         item['agentid'] = socket_port
         db_agent.initAgent(item)
 
@@ -87,7 +94,8 @@ def tor_loop(args, callcount):
 
     finally:
         db_agent.logAgent(item)
-        article_get_by_tor.kill_tor_process(tor_process)
+        if tor_process != None:
+            article_get_by_tor.kill_tor_process(tor_process)
 
 #---------------------------------
 # Batch Suit

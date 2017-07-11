@@ -160,7 +160,7 @@ def getTargetForBbsclass(item):
 
 #---------------------------------
 # SQL Exist Check for Update
-def sqlExistCheckForStatusUpdate(bbsclass, seq):
+def sqlExistCheckForStatusUpdate(bbsclass, seq, page, list_time):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('SELECT bbsclass, workstate, resultstate, agentid FROM tb_article_index WHERE seq = ',
@@ -181,45 +181,55 @@ def sqlExistCheckForStatusUpdate(bbsclass, seq):
 
     if search_item == None:
         sqlInsert(item)
-        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                'Insert New'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
+                                               format(page,","),
+                                               list_time,
                                                bbsclass
                                                ))
     elif search_item['workstate'] == 1 and search_item['resultstate'] != 200:
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
-        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                'Update Not 200'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
+                                               format(page,","),
+                                               list_time,
                                                bbsclass
                                                ))
     elif search_item['workstate'] == 9:
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
-        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                'Update for 9'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
+                                               format(page,","),
+                                               list_time,
                                                bbsclass
                                                ))
     elif search_item['bbsclass'] != bbsclass:
         item['agentid'] = search_item['agentid']
         sqlUpdate(item)
-        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                'Update for bbsclass'.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
+                                               format(page,","),
+                                               list_time,
                                                bbsclass
                                                ))
     else :
         msg = 'Skip:' + str(search_item['workstate']) + '/' + str(search_item['resultstate'])
-        print("[ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+        print("[ {} ][ {} ][ {} ][ {} ][ {} ][ {} ][ {} ]".format(time.strftime('%x %X', time.localtime()),
                                                msg.ljust(19),
                                                item['agentid'],
                                                format(item['seq'],","),
+                                               format(page,","),
+                                               list_time,
                                                bbsclass
                                                ))
         db_result = 0 # Skip
