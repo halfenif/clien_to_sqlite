@@ -51,11 +51,9 @@ def main():
 
     for i, seq in enumerate(set_target):
         item['seq'] = seq
-        item['bbsclass'] = const_config.get_bbs_class()
         item['agentid'] = const_config.get_start_port() + (i % const_config.get_agent_count())
 
         query, params = utils.formatQuery(('UPDATE tb_article_index SET ',
-                                           'bbsclass=',  Param(item['bbsclass']),   ',',
                                            'agentid=',   Param(item['agentid']),
                                            'WHERE seq=', Param(item['seq'])
                                             ),
