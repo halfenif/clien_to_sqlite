@@ -47,3 +47,15 @@ def strToFile(content, title='NoTitle', ext='txt'):
     f.close()
     print('Content To File Writed: ' + file_full_path)
     return
+
+#---------------------------------
+# File to Str
+def fileToStr(filename):
+    outStr = ""
+    constCharSet = 'UTF-8'
+    constOutputFolder = './output_response/'
+    file_full_path = constOutputFolder + filename
+    f = codecs.open(file_full_path, 'r', constCharSet)
+    outStr = f.read()
+    f.close()
+    return outStr

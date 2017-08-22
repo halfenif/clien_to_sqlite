@@ -63,13 +63,14 @@ def sqlGetMinSeq(processid=0):
 def sqlInsert(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
-    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, bbsclass, title, body, pubdate, postuser ) VALUES (',
+    query, params = utils.formatQuery(('INSERT INTO tb_article (seq, bbsclass, title, body, pubdate, postuser, ip ) VALUES (',
                                         Param(item['seq']),       ',',
                                         Param(item['bbsclass']),  ',',
                                         Param(item['title']),     ',',
                                         Param(item['body']),      ',',
                                         Param(item['pubdate']),   ',',
-                                        Param(item['postuser']),  ')'
+                                        Param(item['postuser']),  ',',
+                                        Param(item['ip']),  ')'
                                         ),
                                        cur.paramstyle)
     try:
@@ -99,6 +100,30 @@ def insertItem(item):
                                                    format(item['seq'],","),
                                                    textwrap.shorten(item['title'],width=15, placeholder="...")
                                                    ))
+    return
+
+#---------------------------------
+# SQL Article Insert
+def sqlUpdateId(item):
+    conn = const_dbms.get_conn()
+    cur = conn.cursor()
+    query, params = utils.formatQuery(('UPDATE tb_article SET ',
+                                       'postuser=',    Param(item['postuser']),    ',',
+                                       'ip=',          Param(item['ip']),
+                                       'WHERE seq=',   Param(item['seq'])
+                                        ),
+                                       cur.paramstyle)
+                                           
+    try:
+        cur.execute(query, params)
+    except psycopg2.IntegrityError as err:
+        print("db_article.sqlInsert.psycopg2.IntegrityError:{}".format(err.pgcode))
+    except Exception as err:
+        print("db_article.sqlInsert.Other Exception:{}".format(err))
+    else:
+        conn.commit()
+    finally:
+        conn.close()
     return
 
 #---------------------------------

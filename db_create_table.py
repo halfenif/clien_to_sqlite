@@ -12,6 +12,7 @@ CREATE TABLE public.tb_article
     body text COLLATE pg_catalog."default",
     pubdate text COLLATE pg_catalog."default",
     postuser text COLLATE pg_catalog."default",
+    ip text COLLATE pg_catalog."default",
     regdate timestamp with time zone NOT NULL,
     CONSTRAINT tb_article_pkey PRIMARY KEY (seq)
 )

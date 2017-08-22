@@ -14,6 +14,7 @@ def parse_article(content, seq=0):
     result['body'] = ''
     result['postuser'] = ''
     result['pubdate'] = ''
+    result['ip'] = ''
 
     try:
 
@@ -24,7 +25,10 @@ def parse_article(content, seq=0):
         result['title'] = lxml.find('title').text.replace(' : 클리앙','').replace('\0','').strip()
         result['pubdate'] = lxml.find('div', attrs={"class": "post-time"}).text.strip()
         result['body'] = html.unescape(lxml.find('div', attrs={"class": "post-article fr-view"}).text.replace('\0','').strip())
-        result['postuser'] = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
+        #result['postuser'] = lxml.find('button', attrs={"class": "dropdown-toggle nick"}).text.strip()
+
+        result['postuser'] = lxml.find('button', attrs={"class": "button-md button-report"})['onclick'][18:-3]
+        result['ip'] = lxml.find('div', attrs={"class": "author-ip"}).text.strip()
 
     except Exception as e:
         print('Parse Exception:', sys.exc_info()[0])
@@ -40,12 +44,14 @@ def parse_article(content, seq=0):
 if __name__ == "__main__":
 
     #url = const_config.get_url_by_seq(const_config.testseq())
-    url = const_config.get_url_by_seq(2823857)
+    #url = const_config.get_url_by_seq(2823857)
+    #content = article_get.__test__(url)
 
-    content = article_get.__test__(url)
+    content = z_utils.fileToStr('ParseError_11013572.2017-07-26_17-17-16.html')
     result = parse_article(content)
 
     print('Title:', result['title'])
     print('Body:', result['body'])
     print('Post User:', result['postuser'])
     print('Post Datetime:', result['pubdate'])
+    print('IP Address:', result['ip'])

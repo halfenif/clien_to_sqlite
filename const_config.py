@@ -17,7 +17,7 @@ def get_start_port():
     return 7000 #Reserved
 
 def get_agent_count():
-    return 200
+    return 10
 
 def get_target_make_count():
     return 1000
