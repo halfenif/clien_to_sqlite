@@ -1,39 +1,39 @@
-nohup python3 batch_collect_article_desc.py -p 7020 &
+nohup python3 batch_desc.py -p 7020 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7021 &
+nohup python3 batch_desc.py -p 7021 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7022 &
+nohup python3 batch_desc.py -p 7022 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7023 &
+nohup python3 batch_desc.py -p 7023 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7024 &
+nohup python3 batch_desc.py -p 7024 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7025 &
+nohup python3 batch_desc.py -p 7025 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7026 &
+nohup python3 batch_desc.py -p 7026 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7027 &
+nohup python3 batch_desc.py -p 7027 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7028 &
+nohup python3 batch_desc.py -p 7028 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7029 &
+nohup python3 batch_desc.py -p 7029 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7030 &
+nohup python3 batch_desc.py -p 7030 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7031 &
+nohup python3 batch_desc.py -p 7031 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7032 &
+nohup python3 batch_desc.py -p 7032 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7033 &
+nohup python3 batch_desc.py -p 7033 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7034 &
+nohup python3 batch_desc.py -p 7034 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7035 &
+nohup python3 batch_desc.py -p 7035 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7036 &
+nohup python3 batch_desc.py -p 7036 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7037 &
+nohup python3 batch_desc.py -p 7037 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7038 &
+nohup python3 batch_desc.py -p 7038 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7039 &
+nohup python3 batch_desc.py -p 7039 &

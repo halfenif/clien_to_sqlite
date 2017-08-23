@@ -91,6 +91,7 @@ CREATE TABLE public.tb_agent
 (
     agentid integer NOT NULL,
     processid integer NOT NULL,
+    subprocessid integer NOT NULL,
     lastseq integer NOT NULL,
     lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
     countok integer NOT NULL,
@@ -109,6 +110,9 @@ ALTER TABLE public.tb_agent
 
 ALTER TABLE public.tb_agent
     ALTER COLUMN processid SET DEFAULT 0;
+
+ALTER TABLE public.tb_agent
+    ALTER COLUMN subprocessid SET DEFAULT 0;
 
 ALTER TABLE public.tb_agent
     ALTER COLUMN lastseq SET DEFAULT 0;
@@ -139,6 +143,7 @@ CREATE TABLE public.tb_agent_hist
     seq integer NOT NULL,
     agentid integer NOT NULL,
     processid integer NOT NULL,
+    subprocessid integer NOT NULL,
     lastseq integer NOT NULL,
     lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
     countok integer NOT NULL,

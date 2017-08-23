@@ -1,80 +1,80 @@
-nohup python3 batch_collect_article_desc.py -p 7240 &
+nohup python3 batch_desc.py -p 7240 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7241 &
+nohup python3 batch_desc.py -p 7241 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7243 &
+nohup python3 batch_desc.py -p 7243 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7242 &
+nohup python3 batch_desc.py -p 7242 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7244 &
+nohup python3 batch_desc.py -p 7244 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7245 &
+nohup python3 batch_desc.py -p 7245 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7246 &
+nohup python3 batch_desc.py -p 7246 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7247 &
+nohup python3 batch_desc.py -p 7247 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7248 &
+nohup python3 batch_desc.py -p 7248 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7249 &
+nohup python3 batch_desc.py -p 7249 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7250 &
+nohup python3 batch_desc.py -p 7250 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7251 &
+nohup python3 batch_desc.py -p 7251 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7252 &
+nohup python3 batch_desc.py -p 7252 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7253 &
+nohup python3 batch_desc.py -p 7253 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7254 &
+nohup python3 batch_desc.py -p 7254 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7255 &
+nohup python3 batch_desc.py -p 7255 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7256 &
+nohup python3 batch_desc.py -p 7256 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7257 &
+nohup python3 batch_desc.py -p 7257 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7258 &
+nohup python3 batch_desc.py -p 7258 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7259 &
+nohup python3 batch_desc.py -p 7259 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7260 &
+nohup python3 batch_desc.py -p 7260 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7261 &
+nohup python3 batch_desc.py -p 7261 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7262 &
+nohup python3 batch_desc.py -p 7262 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7263 &
+nohup python3 batch_desc.py -p 7263 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7264 &
+nohup python3 batch_desc.py -p 7264 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7265 &
+nohup python3 batch_desc.py -p 7265 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7266 &
+nohup python3 batch_desc.py -p 7266 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7267 &
+nohup python3 batch_desc.py -p 7267 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7268 &
+nohup python3 batch_desc.py -p 7268 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7269 &
+nohup python3 batch_desc.py -p 7269 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7270 &
+nohup python3 batch_desc.py -p 7270 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7271 &
+nohup python3 batch_desc.py -p 7271 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7272 &
+nohup python3 batch_desc.py -p 7272 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7273 &
+nohup python3 batch_desc.py -p 7273 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7274 &
+nohup python3 batch_desc.py -p 7274 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7275 &
+nohup python3 batch_desc.py -p 7275 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7276 &
+nohup python3 batch_desc.py -p 7276 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7277 &
+nohup python3 batch_desc.py -p 7277 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7278 &
+nohup python3 batch_desc.py -p 7278 &
 sleep 1
-nohup python3 batch_collect_article_desc.py -p 7279 &
+nohup python3 batch_desc.py -p 7279 &
 sleep 1

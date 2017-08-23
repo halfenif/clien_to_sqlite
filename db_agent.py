@@ -50,7 +50,7 @@ def sqlInsertHist(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('INSERT INTO tb_agent_hist',
-                                       "SELECT nextval('seq_agent_hist'), agentid, processid, lastseq, lastbbsclass, countok, countfail, begindate, lastupdate FROM tb_agent WHERE agentid=",
+                                       "SELECT nextval('seq_agent_hist'), agentid, processid, subprocessid, lastseq, lastbbsclass, countok, countfail, begindate, lastupdate FROM tb_agent WHERE agentid=",
                                         Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
@@ -72,12 +72,11 @@ def sqlUpdate(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
-                                       'processid=',         Param(item['processid']),   ',',
-                                       'lastseq=',           Param(item['seq']),         ',',
-                                       'countok=',           Param(item['countok']),     ',',
-                                       'countfail=',         Param(item['countfail']),   ',',
+                                       'lastseq=',           Param(item['seq']),          ',',
+                                       'countok=',           Param(item['countok']),      ',',
+                                       'countfail=',         Param(item['countfail']),    ',',
                                        'lastupdate= Now()',
-                                       'WHERE agentid=',   Param(item['agentid'])
+                                       'WHERE agentid=',     Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
     try:
@@ -98,12 +97,13 @@ def sqlInitUpdate(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
-                                       'processid=',         Param(0),                            ',',
-                                       'lastbbsclass=',      Param(const_config.get_bbs_class()), ',',
-                                       'lastseq=',           Param(0),                            ',',
-                                       'countok=',           Param(0),                            ',',
-                                       'countfail=',         Param(0),                            ',',
-                                       'begindate= Now()',                                        ',',
+                                       'processid=',         Param(item['processid']),    ',',
+                                       'subprocessid=',      Param(item['subprocessid']), ',',
+                                       'lastbbsclass=',      Param('None'),               ',',
+                                       'lastseq=',           Param(0),                    ',',
+                                       'countok=',           Param(0),                    ',',
+                                       'countfail=',         Param(0),                    ',',
+                                       'begindate= Now()',                                ',',
                                        'lastupdate= Now()',
                                        'WHERE agentid=',   Param(item['agentid'])
                                         ),
