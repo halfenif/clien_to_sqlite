@@ -93,7 +93,7 @@ CREATE TABLE public.tb_agent
     processid integer NOT NULL,
     subprocessid integer NOT NULL,
     lastseq integer NOT NULL,
-    lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
+    countloop integer NOT NULL,
     countok integer NOT NULL,
     countfail integer NOT NULL,
     begindate timestamp with time zone NOT NULL,
@@ -121,7 +121,7 @@ ALTER TABLE public.tb_agent
     ALTER COLUMN lastseq SET DEFAULT 0;
 
 ALTER TABLE public.tb_agent
-    ALTER COLUMN lastbbsclass SET DEFAULT 'None';
+    ALTER COLUMN countloop SET DEFAULT 0;
 
 ALTER TABLE public.tb_agent
     ALTER COLUMN countok SET DEFAULT 0;
@@ -145,7 +145,7 @@ CREATE TABLE public.tb_agent_hist
     processid integer NOT NULL,
     subprocessid integer NOT NULL,
     lastseq integer NOT NULL,
-    lastbbsclass text COLLATE pg_catalog."default" NOT NULL,
+    countloop integer NOT NULL,
     countok integer NOT NULL,
     countfail integer NOT NULL,
     begindate timestamp with time zone NOT NULL,

@@ -50,7 +50,7 @@ def sqlInsertHist(item):
     conn = const_dbms.get_conn()
     cur = conn.cursor()
     query, params = utils.formatQuery(('INSERT INTO tb_agent_hist',
-                                       "SELECT nextval('seq_agent_hist'), agentid, processid, subprocessid, lastseq, lastbbsclass, countok, countfail, begindate, lastupdate FROM tb_agent WHERE agentid=",
+                                       "SELECT nextval('seq_agent_hist'), agentid, processid, subprocessid, lastseq, countloop, countok, countfail, begindate, lastupdate FROM tb_agent WHERE agentid=",
                                         Param(item['agentid'])
                                         ),
                                        cur.paramstyle)
@@ -73,6 +73,7 @@ def sqlUpdate(item):
     cur = conn.cursor()
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
                                        'lastseq=',           Param(item['seq']),          ',',
+                                       'countloop=',         Param(item['countloop']),    ',',
                                        'countok=',           Param(item['countok']),      ',',
                                        'countfail=',         Param(item['countfail']),    ',',
                                        'lastupdate= Now()',
@@ -99,8 +100,8 @@ def sqlInitUpdate(item):
     query, params = utils.formatQuery(('UPDATE tb_agent SET ',
                                        'processid=',         Param(item['processid']),    ',',
                                        'subprocessid=',      Param(item['subprocessid']), ',',
-                                       'lastbbsclass=',      Param('None'),               ',',
                                        'lastseq=',           Param(0),                    ',',
+                                       'countloop=',         Param(0),                    ',',
                                        'countok=',           Param(0),                    ',',
                                        'countfail=',         Param(0),                    ',',
                                        'begindate= Now()',                                ',',

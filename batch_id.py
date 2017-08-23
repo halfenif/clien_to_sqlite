@@ -31,6 +31,7 @@ def get_article(socket_port, target, args, callcount):
         item['bbsclass'] = bbsclass
         item['workstate'] = 1
         item['resultstate'] = status_code
+        item['countloop'] = callcount
 
         if args.filewrite:
             z_utils.strToFile(html, 'Article', 'html')
@@ -67,7 +68,8 @@ def tor_loop(args, callcount):
         item['agentid'] = socket_port
         item['processid'] = os.getpid()
         item['subprocessid'] = tor_process.pid
-        
+        item['countloop'] = callcount
+
         db_agent.initAgent(item)
 
         #Make Target
