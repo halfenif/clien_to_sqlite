@@ -14,10 +14,10 @@ def get_url_by_seq(seq):
     return get_baseurl() + get_bbs_class() + '/' + str(seq)
 
 def get_start_port():
-    return 7000 #Reserved
+    return 7001 #Reserved
 
 def get_agent_count():
-    return 10
+    return 50
 
 def get_target_make_count():
     return 1000
