@@ -26,6 +26,9 @@ def get_list(socket_port, args, callcount):
 
     for page in count(args.startpage):
         url =  baseurl + '?po=' + str(page)
+        if args.articlePeriod:
+            url = url + '&articlePeriod=' + args.articlePeriod
+
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, page)
 
         if status_code != '200':
@@ -66,10 +69,10 @@ def get_list(socket_port, args, callcount):
         item = {}
         item['seq'] = page
         item['agentid'] = socket_port
-        item['processid'] = os.getpid()
         item['bbsclass'] = bbsclass
         item['workstate'] = 1
         item['resultstate'] = status_code
+        item['countloop'] = callcount
         item['countok'] = countok
         item['countfail'] = countfail
         db_agent.setAgent(item)
@@ -88,6 +91,9 @@ def tor_loop(args, callcount):
         tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
 
         item['agentid'] = socket_port
+        item['processid'] = os.getpid()
+        item['subprocessid'] = tor_process.pid
+        item['countloop'] = callcount
         db_agent.initAgent(item)
 
         get_list(socket_port, args, callcount)
@@ -115,6 +121,10 @@ if __name__ == "__main__":
     parser.add_argument('-t', dest='targetboard', action='store',
                        required=True, choices=['board', 'cm'],
                        help='Index Page Type')
+
+    parser.add_argument('-y', dest='articlePeriod', action='store',
+                       default=None,
+                       help='Post Year')
 
     #Parse Argument
     args = parser.parse_args()
