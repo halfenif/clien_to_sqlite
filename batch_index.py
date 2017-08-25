@@ -54,7 +54,10 @@ def get_list(socket_port, args, callcount):
             seq = int(url_path_split[1])
 
             #Find time
-            list_time = list_row.find('div', attrs={"class": "list-time"}).find('span', attrs={"class": "timestamp"}).text
+            try:
+                list_time = list_row.find('div', attrs={"class": "list-time"}).find('span', attrs={"class": "timestamp"}).text
+            except:
+                list_time = 'None'
 
             db_result = 0
             if bbsclass not in ['notice', 'rule']:
