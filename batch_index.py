@@ -29,7 +29,11 @@ def get_list(socket_port, args, callcount):
         if args.articlePeriod:
             url = url + '&articlePeriod=' + args.articlePeriod
 
+        print('url', url)
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, page)
+
+        if args.filewrite:
+            z_utils.strToFile(resutl_context, 'BBSList', 'html')
 
         if status_code != '200':
             print('End Status Code:', status_code)
@@ -40,10 +44,16 @@ def get_list(socket_port, args, callcount):
 
             return status_code
 
-        if args.filewrite:
-            z_utils.strToFile(resutl_context, 'BBSList', 'html')
-
         soup = BeautifulSoup(resutl_context, 'html.parser')
+
+        findCheck = soup.find_all('div', attrs={"class": "list-row symph-row"})
+        if len(findCheck) == 0:
+            print('Find Check is 0')
+            try:
+                sys.exit(0)
+            except:
+                os._exit(0)
+            return 400
 
         for list_row in soup.find_all('div', attrs={"class": "list-row symph-row"}):
 
@@ -78,6 +88,7 @@ def get_list(socket_port, args, callcount):
         item['countok'] = countok
         item['countfail'] = countfail
         db_agent.setAgent(item)
+        return status_code
 
 
 
