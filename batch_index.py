@@ -69,7 +69,6 @@ def get_list(socket_port, args, callcount):
         item = {}
         item['seq'] = page
         item['agentid'] = socket_port
-        item['bbsclass'] = bbsclass
         item['workstate'] = 1
         item['resultstate'] = status_code
         item['countloop'] = callcount
