@@ -45,7 +45,6 @@ def get_list(socket_port, args, callcount):
             return status_code
 
         soup = BeautifulSoup(resutl_context, 'html.parser')
-
         findCheck = soup.find_all('div', attrs={"class": "list-row symph-row"})
         if len(findCheck) == 0:
             print('Find Check is 0')
@@ -88,7 +87,7 @@ def get_list(socket_port, args, callcount):
         item['countok'] = countok
         item['countfail'] = countfail
         db_agent.setAgent(item)
-        return status_code
+        #Continue For Loop, Don't Return.
 
 
 
