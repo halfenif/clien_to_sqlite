@@ -21,9 +21,12 @@ def get_article(socket_port, target, args, callcount):
     for i, row in enumerate(target, 1):
         seq = row['seq']
         bbsclass = row['bbsclass']
+
         url = const_config.get_baseurl() + bbsclass + '/' + str(seq)
 
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, seq)
+
+        z_utils.strToFile(resutl_context, 'Tor', 'html')
 
         item = {}
         item['seq'] = seq

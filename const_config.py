@@ -7,17 +7,14 @@ def get_boardurl():
 def get_cmurl():
     return 'https://www.clien.net/service/group/cm_all/'
 
-def get_bbs_class():
-    return 'park'
-
-def get_url_by_seq(seq):
-    return get_baseurl() + get_bbs_class() + '/' + str(seq)
+def get_url_by_seq(bbsclass, seq):
+    return get_baseurl() + bbsclass + '/' + str(seq)
 
 def get_start_port():
     return 7001 #Reserved
 
 def get_agent_count():
-    return 50
+    return 100
 
 def get_target_make_count():
     return 1000
