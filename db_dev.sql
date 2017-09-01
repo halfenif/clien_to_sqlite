@@ -13,4 +13,41 @@ select now() AT TIME ZONE 'Asia/Seoul';
 select now();
 -- '2017-06-12 09:56:48.715265+00'
 -- '2017-06-12 10:52:20.058441+00'
--- '2017-06-12 10:51:49.230699' 
+-- '2017-06-12 10:51:49.230699'
+
+
+select agentid, count(seq)
+from   tb_article_index
+where  1=1
+--and    agentid >= 7001
+--and    agentid <= 7100
+and    workstate = 0
+group by agentid
+order by agentid
+;
+
+select   agentid
+        ,lastseq
+        ,(now() - lastupdate) updategap
+        ,processid, subprocessid
+from     tb_agent
+where  agentid >= 7001
+and    agentid <= 7100
+order by agentid
+;
+
+
+select t.d, count(t.d) from (
+select workstate || '-' || resultstate  as d
+from   tb_article_index
+) t
+group by t.d
+order by t.d
+;
+
+select * from tb_article_index
+where  1=1
+and    workstate = 0
+and    resultstate = 400
+--order by lastupdate desc
+;

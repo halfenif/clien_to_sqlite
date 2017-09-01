@@ -26,8 +26,6 @@ def get_article(socket_port, target, args, callcount):
 
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, seq)
 
-        z_utils.strToFile(resutl_context, 'Tor', 'html')
-
         item = {}
         item['seq'] = seq
         item['agentid'] = socket_port

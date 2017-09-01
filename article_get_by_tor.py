@@ -81,7 +81,6 @@ def kill_tor_process(tor_process):
 #-------------------------------------------------------------------------------
 # Call
 def get_article(url, socket_port, seq=0):
-    print('url', url)
     time_start = time.time()
 
     out_return = '' #Init Value
@@ -96,7 +95,7 @@ def get_article(url, socket_port, seq=0):
     query.setopt(pycurl.WRITEFUNCTION, out_io.write)
     query.setopt(pycurl.HTTPHEADER, ["Accept:"])
     query.setopt(pycurl.USERAGENT, 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)')
-    
+
     query.perform()
     status_code = str(query.getinfo(pycurl.HTTP_CODE))
     if status_code == '200':
@@ -104,13 +103,13 @@ def get_article(url, socket_port, seq=0):
 
     url_path_split = [x for x in re.sub(r':?service|board','',urlparse(url).path).split('/') if x]
     bbsclass = url_path_split[0]
-    print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()),
-                                                                                   socket_port,
-                                                                                   format(int(seq),','),
-                                                                                   status_code,
-                                                                                   round(time.time() - time_start),
-                                                                                   bbsclass
-                                                                                   ))
+    #print("[ {} ]                       [ {} ][ {} ][ {} ][ {}sec ][ {} ]".format(time.strftime('%x %X', time.localtime()),
+    #                                                                               socket_port,
+    #                                                                               format(int(seq),','),
+    #                                                                               status_code,
+    #                                                                               round(time.time() - time_start),
+    #                                                                               bbsclass
+    #                                                                               ))
     return status_code, out_return
 
 #---------------------------------
