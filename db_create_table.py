@@ -77,6 +77,9 @@ CREATE INDEX CONCURRENTLY tb_article_index_processid
 CREATE INDEX CONCURRENTLY tb_article_index_workstate
     ON public.tb_article_index(workstate, seq);
 
+CREATE INDEX CONCURRENTLY tb_article_index_agentid
+    ON public.tb_article_index(workstate, agentid);
+
 INSERT INTO tb_article_index
 SELECT seq, bbsclass, 7000, 1, 200, regdate, regdate from tb_article;
 

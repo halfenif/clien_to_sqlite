@@ -90,7 +90,16 @@ def sqlInsert(item):
 def insertItem(item):
     #
     if sqlExistCheck(item['seq']):
-        print('[Exist  Article] ' + item['title'])
+        #print('[Exist  Article] ' + item['title'])
+        sqlUpdateId(item)
+        print("[ {} ][ {} ][ {} ][ {} ] {} {}".format(time.strftime('%x %X',
+                                                   time.localtime()),
+                                                   item['pubdate'],
+                                                   item['agentid'],
+                                                   format(item['seq'],","),
+                                                   item['postuser'],
+                                                   item['ip']
+                                                   ))
     else:
         sqlInsert(item)
         print("[ {} ][ {} ][ {} ][ {} ] {}".format(time.strftime('%x %X',
@@ -113,7 +122,7 @@ def sqlUpdateId(item):
                                        'WHERE seq=',   Param(item['seq'])
                                         ),
                                        cur.paramstyle)
-                                           
+
     try:
         cur.execute(query, params)
     except psycopg2.IntegrityError as err:
