@@ -24,7 +24,14 @@ def get_list(socket_port, args, callcount):
     elif args.targetboard == 'cm':
         baseurl = const_config.get_cmurl()
 
-    for page in count(args.startpage):
+    c = count(args.startpage)
+    for page in c:
+        if countfail >= const_config.get_target_make_count():
+            c.clear()
+            print('-----------------------------------------------------------')
+            print('Sleep 10 Min')
+            time.sleep(600) //10Min
+
         url =  baseurl + '?po=' + str(page)
         if args.articlePeriod:
             url = url + '&articlePeriod=' + args.articlePeriod
