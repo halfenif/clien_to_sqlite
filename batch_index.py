@@ -30,7 +30,7 @@ def get_list(socket_port, args, callcount):
             c.clear()
             print('-----------------------------------------------------------')
             print('Sleep 10 Min')
-            time.sleep(600) //10Min
+            time.sleep(600)
 
         url =  baseurl + '?po=' + str(page)
         if args.articlePeriod:
