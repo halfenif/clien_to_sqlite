@@ -70,6 +70,7 @@ def tor_loop(args, callcount):
     if len(target) == 0:
         print('END: Target is Empty!!')
         print('Sleep 10 Min')
+        sys.stdout.flush()
         time.sleep(600)
         return
 
