@@ -64,6 +64,15 @@ def tor_loop(args, callcount):
     item = {}
     item['agentid'] = args.socket_port
 
+    #Make Target
+    target = db_article_index.getTarget(item)
+
+    if len(target) == 0:
+        print('END: Target is Empty!!')
+        print('Sleep 10 Min')
+        time.sleep(600)
+        return
+
     try:
         tor_process, socket_port = article_get_by_tor.get_tor_process(args.socket_port)
         item['agentid'] = socket_port
@@ -72,21 +81,6 @@ def tor_loop(args, callcount):
         item['countloop'] = callcount
 
         db_agent.initAgent(item)
-
-        #Make Target
-        target = db_article_index.getTarget(item)
-
-        if len(target) == 0:
-            print('END: Target is Empty!!')
-            print('Sleep 10 Min')
-            time.sleep(600)
-            return
-            # try:
-            #     sys.exit(0)
-            # except:
-            #     os._exit(0)
-
-
         get_article(socket_port, target, args, callcount)
     except:
         print("tor_loop:{}".format(sys.exc_info()[0]))
