@@ -71,6 +71,7 @@ def print_bootstarp_lines(line):
         idx = line.index("Bootstrapped")
         #print(line)
         print("[ {} ]                       [ ---- ][ {} ]".format(time.strftime('%x %X', time.localtime()), line[idx:]))
+        sys.stdout.flush()
 
 #-------------------------------------------------------------------------------
 # Kill
