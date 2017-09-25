@@ -24,19 +24,23 @@ def get_list(socket_port, args, callcount):
     elif args.targetboard == 'cm':
         baseurl = const_config.get_cmurl()
 
-    c = count(args.startpage)
-    for page in c:
-        if countfail >= const_config.get_target_make_count():
-            c.clear()
+
+
+    page = args.startpage
+    while 1:
+        if countfail >= const_config.get_agent_reset_count():
+            page = args.startpage
+            countfail = 0
             print('-----------------------------------------------------------')
             print('Sleep 10 Min')
+            sys.stdout.flush()
             time.sleep(600)
 
         url =  baseurl + '?po=' + str(page)
         if args.articlePeriod:
             url = url + '&articlePeriod=' + args.articlePeriod
 
-        print('url', url)
+        #print('url', url)
         status_code, resutl_context = article_get_by_tor.get_article(url, socket_port, page)
 
         if args.filewrite:
@@ -94,8 +98,8 @@ def get_list(socket_port, args, callcount):
         item['countok'] = countok
         item['countfail'] = countfail
         db_agent.setAgent(item)
+        page = page + 1 #Page 증가
         #Continue For Loop, Don't Return.
-
 
 
 #---------------------------------
