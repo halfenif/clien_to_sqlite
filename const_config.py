@@ -19,6 +19,9 @@ def get_agent_count():
 def get_target_make_count():
     return 1000
 
+def get_agent_reset_count():
+    return 200    
+
 def get_temp_cache_folder():
     return './data_tor/'
 

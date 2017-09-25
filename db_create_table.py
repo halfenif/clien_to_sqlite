@@ -27,10 +27,11 @@ ALTER TABLE public.tb_article
 ALTER TABLE public.tb_article
     ALTER COLUMN regdate SET DEFAULT now();
 
-INSERT INTO tb_article
-SELECT seq, 'park', title, body, pubdate, postuser, regdate FROM tb_article_backup;
+CREATE INDEX tb_article_bbsclass ON tb_article (bbsclass, pubdate);
 
-commit;
+CREATE INDEX tb_article_postuser ON tb_article (postuser, pubdate);
+
+CREATE INDEX tb_article_ip ON tb_article (ip, pubdate);
 
 #----------------------------------
 
