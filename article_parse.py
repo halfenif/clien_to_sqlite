@@ -21,7 +21,7 @@ def parse_article(content, seq=0):
         #result['title'] = html.unescape(re.find('<title>(.*)</title>', content).replace(' : 클리앙','').replace('\0','').strip())
         #print('resutl_title:', resutl_title)
 
-        lxml = BeautifulSoup(content,'lxml')
+        lxml = BeautifulSoup(content,'html')
         result['title'] = lxml.find('title').text.replace(' : 클리앙','').replace('\0','').strip()
         result['pubdate'] = lxml.find('div', attrs={"class": "post-time"}).text.strip()
         result['body'] = html.unescape(lxml.find('div', attrs={"class": "post-article fr-view"}).text.replace('\0','').strip())
