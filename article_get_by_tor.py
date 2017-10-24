@@ -104,9 +104,9 @@ def get_article(url, socket_port, seq=0):
     response = session.get(url)
 
     status_code = str(response.status_code)
-    print('status_code', status_code)
+    #print('status_code', status_code)
     out_return = response.text
-    z_utils.strToFile(out_return, 'request_test', 'html')
+    #z_utils.strToFile(out_return, 'request_test', 'html')
     return status_code, out_return
 
 #---------------------------------
