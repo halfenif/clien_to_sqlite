@@ -177,27 +177,35 @@ ALTER SEQUENCE seq_agent_hist RESTART WITH 16891; #select max(seq) from tb_agent
 # ALTER SEQUENCE seq_agent_hist OWNED BY public.tb_agent_hist.seq;
 
 
+#----------------------------------
+DROP TABLE public.tb_user;
 
+CREATE TABLE public.tb_user
+(
+    userid text COLLATE pg_catalog."default" NOT NULL,
+    birthdate text COLLATE pg_catalog."default",
+    countarticle integer NOT NULL,
+    countcomments integer NOT NULL,
+    regdate timestamp with time zone NOT NULL,
+    lastupdate timestamp with time zone NOT NULL,
+    CONSTRAINT tb_user_pkey PRIMARY KEY (userid)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE clien;
 
+ALTER TABLE public.tb_user
+    ALTER COLUMN countarticle SET DEFAULT 0;
 
+ALTER TABLE public.tb_user
+    ALTER COLUMN countcomments SET DEFAULT 0;
 
+ALTER TABLE public.tb_user
+    ALTER COLUMN regdate SET DEFAULT now();
 
+ALTER TABLE public.tb_user
+    ALTER COLUMN lastupdate SET DEFAULT now();
 
-
-#---------------------------------
-# Folder Safe
-try:
-    os.stat(constOutputFolder)
-except:
-    os.makedirs(constOutputFolder)
-
-#---------------------------------
-# Create Table
-conn = dbms.connect.sqlite(constDBMS)
-cur = conn.cursor()
-
-cur.execute(constDBArticle)
-cur.execute(constDBError)
-
-conn.commit()
-conn.close()
+ALTER TABLE public.tb_user
+    OWNER to clien;

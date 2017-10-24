@@ -53,8 +53,9 @@ def get_tor_process(socket_port=0):
     tor_process = stem.process.launch_tor_with_config(
         config = {
             #'tor_cmd':"C:/Users/junye/Desktop/Tor Browser/Browser/TorBrowser/Tor/Tor.exe",
-            'SocksPort':str(socket_port),
-            'DataDirectory':strDataFolder,
+            #'ControlPort': str(socket_port-1000),
+            'SocksPort': str(socket_port),
+            'DataDirectory': strDataFolder,
             #'Log': ['DEBUG stdout', 'ERR stderr' ],
             #'ExitNodes':'{ru}',
         },
@@ -112,16 +113,11 @@ def get_article(url, socket_port, seq=0):
 #---------------------------------
 # Main
 if __name__ == "__main__":
-    socket_port = get_socket_port()
-    #print(term.format("Starting Tor:\n", term.Attr.BOLD))
-    #print("Starting Tor:")
-    url = "https://www.atagar.com/echo.php"
     url = "https://www.google.com"
-    #url = "https://www.clien.net/service/board/park/10843228"
-    # while(True):
-    #     tor_process(url, socket_port)
+    url = "https://www.clien.net/service/board/cm_vcoin/11257927"
 
-
-
-    #print(term.format("\nChecking our endpoint:\n", term.Attr.BOLD))
-    #print("Checking our endpoint:")
+    try:
+        tor_process, socket_port = get_tor_process()
+        get_article(url, socket_port)
+    finally:
+        kill_tor_process(tor_process)
